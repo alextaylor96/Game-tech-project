@@ -88,6 +88,16 @@ void PrintStatusEntries()
 	NCLDebug::AddStatusEntry(status_colour, "");
 }
 
+//create sphere at the camera acceletating in same direction
+void fireSphere() {
+	
+	SceneManager::Instance()->GetCurrentScene()->AddGameObject(CommonUtils::BuildSphereObject(
+		"cameraSpawnedSphere",
+		GraphicsPipeline::Instance()->GetCamera()->GetPosition(), 0.5f, true, 0.5f, true, true, Vector4(0, 0, 1, 1)
+	));
+	//make fire in correct direction
+	//SceneManager::Instance()->GetCurrentScene()->FindGameObject("cameraSpawnedSphere")->Physics()->SetForce(Vector3(GraphicsPipeline::Instance()->GetCamera()->GetYaw(), GraphicsPipeline::Instance()->GetCamera()->GetPitch(),0));
+}
 
 // Process Input
 //  - Handles all program wide keyboard inputs for
@@ -114,6 +124,9 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
 		show_perf_metrics = !show_perf_metrics;
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_X))
+		fireSphere();
 }
 
 

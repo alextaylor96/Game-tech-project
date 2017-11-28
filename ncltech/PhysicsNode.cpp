@@ -34,7 +34,7 @@ void PhysicsNode::IntegrateForPosition(float dt)
 	position += linVelocity * dt;
 
 	//update orientation
-	orientation = orientation * Quaternion(angVelocity * dt * 0.5f, 0.0f);
+	orientation = orientation + Quaternion(angVelocity * dt * 0.5f, 0.0f) * orientation;
 
 	orientation.Normalise();
 

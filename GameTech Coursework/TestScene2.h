@@ -2,6 +2,7 @@
 
 #include <ncltech\Scene.h>
 #include <ncltech\CommonUtils.h>
+#include <ncltech\DistanceConstraint.h>
 
 //Fully striped back scene to use as a template for new scenes.
 class TestScene2 : public Scene
@@ -31,10 +32,24 @@ public:
 			false,
 			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
-		this->AddGameObject(CommonUtils::BuildSphereObject(
+		GameObject* ball;
+
+		ball = CommonUtils::BuildSphereObject(
 			"sphere",
 			Vector3(0.0f, 1.0f, 0.0f), 0.5f , true, 0.5f, true, true, Vector4(1, 0, 0, 1)
-		));
+		);
+
+		this->AddGameObject(ball);
+
+
+		//DistanceConstraint* constraint = new DistanceConstraint(
+		//	sphere->Physics(),					//Physics Object A
+		//	ball->Physics(),					//Physics Object B
+		//	handle->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+		//	ball->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+		//PhysicsEngine::Instance()->AddConstraint(constraint);
+
 	}
 
 };

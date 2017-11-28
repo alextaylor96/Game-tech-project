@@ -36,19 +36,35 @@ public:
 
 		ball = CommonUtils::BuildSphereObject(
 			"sphere",
-			Vector3(0.0f, 1.0f, 0.0f), 0.5f , true, 0.5f, true, true, Vector4(1, 0, 0, 1)
+			Vector3(5.0f, 5.0f, 0.0f), 0.5f , true, 0.5f, true, true, Vector4(1, 0, 0, 1)
 		);
 
 		this->AddGameObject(ball);
 
+		GameObject* attachedTo;
 
-		//DistanceConstraint* constraint = new DistanceConstraint(
-		//	sphere->Physics(),					//Physics Object A
-		//	ball->Physics(),					//Physics Object B
-		//	handle->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
-		//	ball->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+		attachedTo = CommonUtils::BuildSphereObject("",
+			Vector3(0.f, 10.f, 0.0f),				//Position
+			0.1f,									//Radius
+			true,									//Has Physics Object
+			0.1f,									//Inverse Mass = 1 / 10 kg mass (For creating rotational inertia tensor)
+			false,									//No Collision Shape Yet
+			true,									//Dragable by the user
+			Vector4(0,0,0,1));	//Color
 
-		//PhysicsEngine::Instance()->AddConstraint(constraint);
+													//Set linear mass to be infinite, so it can rotate still but not move
+		attachedTo->Physics()->SetInverseMass(0.0f);
+
+		this->AddGameObject(attachedTo);
+		//attach the ball to the contraint thing
+		DistanceConstraint* constraint = new DistanceConstraint(
+			ball->Physics(),					//Physics Object A
+			attachedTo->Physics(),					//Physics Object B
+			ball->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+			attachedTo->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+	
+		PhysicsEngine::Instance()->AddConstraint(constraint);
 
 	}
 

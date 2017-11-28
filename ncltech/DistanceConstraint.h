@@ -49,7 +49,54 @@ public:
 	// objects in order to satisfy the constraint.
 	virtual void ApplyImpulse() override
 	{
-	
+		Vector3 r1 = pnodeA->GetOrientation().ToMatrix3() * relPosA;
+		Vector3 r2 = pnodeB->GetOrientation().ToMatrix3() * relPosB;
+		
+		//get global contact points in world spcace
+		Vector3 globalOnA = r1 + pnodeA->GetPosition();
+		Vector3 globalOnB = r2 + pnodeB->GetPosition();
+
+		//vector between these 2 points
+		Vector3 ab = globalOnB - globalOnA;
+		Vector3 abn = ab;
+		abn.Normalise();
+
+		//velocitys at contact point
+		Vector3 v0 = pnodeA->GetLinearVelocity() + Vector3::Cross(pnodeA->GetAngularVelocity(), r1);
+		Vector3 v1 = pnodeB->GetLinearVelocity() + Vector3::Cross(pnodeB->GetAngularVelocity(), r2);
+
+		//relative velocity in contraint direction
+		float abnVel = Vector3::Dot(v0 - v1, abn);
+
+		//mass of constraint(how difficult to move the objects)
+		float invConstraintMassLin = pnodeA->GetInverseMass() + pnodeB->GetInverseMass();
+
+		float invConstraintMassRot = Vector3::Dot(abn, Vector3::Cross(pnodeA->GetInverseInertia() * Vector3::Cross(r1, abn), r1) +
+			Vector3::Cross(pnodeB->GetInverseInertia() * Vector3::Cross(r2, abn), r2));
+
+		float constraintMass = invConstraintMassLin + invConstraintMassRot;
+		//comment out to check
+		if (constraintMass > 0.0f) {
+			//baumgarte offset, adds energy over time to counter solving errors
+			float b = 0.0f;
+
+			float distance_offset = ab.Length() - targetLength;
+			//scalar value should be adjusted based on time step and objects in the system
+			float baumgarte_scalar = 0.1f;
+			b = -(baumgarte_scalar / PhysicsEngine::Instance()->GetDeltaTime()) * distance_offset;
+
+			//velocity impulse(jn)
+			float jn = -(abnVel + b) / constraintMass;
+
+			//apply linerar velocity impulse
+			pnodeA->SetLinearVelocity(pnodeA->GetLinearVelocity() + abn * (pnodeA->GetInverseMass() * jn));
+			pnodeB->SetLinearVelocity(pnodeB->GetLinearVelocity() - abn * (pnodeB->GetInverseMass() * jn));
+
+			//apply rotation velocity impulse
+			pnodeA->SetAngularVelocity(pnodeA->GetAngularVelocity() + pnodeA->GetInverseInertia() * Vector3::Cross(r1, abn*jn));
+			pnodeB->SetAngularVelocity(pnodeB->GetAngularVelocity() - pnodeB->GetInverseInertia() * Vector3::Cross(r2, abn*jn));
+		}
+
 	}
 
 	//Draw the constraint visually to the screen for debugging

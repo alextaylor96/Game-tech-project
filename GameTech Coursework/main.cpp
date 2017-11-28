@@ -94,18 +94,17 @@ void fireSphere() {
 
 	newBall = CommonUtils::BuildSphereObject(
 		"cameraSpawnedSphere",
-		GraphicsPipeline::Instance()->GetCamera()->GetPosition(), 0.5f, true, 0.5f, true, true, Vector4(0, 0, 1, 1)
+		GraphicsPipeline::Instance()->GetCamera()->GetPosition(), 0.3f, true, 0.3f, true, true, Vector4(0, 0, 1, 1)
 	);
 
-	SceneManager::Instance()->GetCurrentScene()->AddGameObject(newBall);
+	
 	//make fire in correct direction
-	newBall->Physics()->SetLinearVelocity(Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetPitch(), Vector3(1, 0, 0)) * 
+	newBall->Physics()->SetLinearVelocity(Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetPitch(), Vector3(1, 0,0)) * 
 		Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetYaw(), Vector3(0, 1, 0))
 		* Vector3(0, 0, -1) * 10
 	);
 
-
-
+	SceneManager::Instance()->GetCurrentScene()->AddGameObject(newBall);
 }
 
 // Process Input

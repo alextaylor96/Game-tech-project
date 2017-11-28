@@ -1,0 +1,78 @@
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexBasic.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragSuperSample.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexShadow.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/Common/EmptyFragment.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechGeomShadow.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexFull.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragForwardRender.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointVertex.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointFragment.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointGeometry.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Vertex.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/LineGeometry.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/VertexColOnly.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextVertex.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextFragment.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextGeometry.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Shader:
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexPicker.glsl
+[12:28:19]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragScreenPicker_nsightfix.glsl
+[12:28:19]     -> Linking Shader: Success!
+[12:28:19] 
+[12:28:19] Loading Mesh: ../../Data/Meshes/cube.obj
+[12:28:19] 
+[12:28:19] Loading Mesh: ../../Data/Meshes/sphere.obj
+[12:28:19] 
+[12:28:19] [SceneManager] - Enqueued scene: "GameLogic Example #1 - Path Following"
+[12:28:19] 
+[12:28:19] [SceneManager] - Scene switched to: "GameLogic Example #1 - Path Following"
+[12:28:19] [SceneManager] - Enqueued scene: "GameLogic Example #2 - Angle Computation"
+[12:28:19] Loading Mesh: ../../Data/Meshes/raptor.obj
+[12:28:19]     -> Loading Texture: ../../Data/Textures/raptor.jpg
+[12:28:19] 
+[12:28:19] [SceneManager] - Enqueued scene: "GameLogic Example #3 - Finite State Machine"
+[12:28:19] Loading Mesh: ../../Data/Meshes/cube.obj
+[12:28:19] 
+[12:28:19] [SceneManager] - Enqueued scene: "GameLogic Example #4 - Path Finding"
+[12:28:27] [SceneManager] - Exiting scene -
+[12:28:27] 
+[12:28:27] [SceneManager] - Scene switched to: "GameLogic Example #2 - Angle Computation"
+[12:28:37] [SceneManager] - Exiting scene -
+[12:28:37] 
+[12:28:37] [SceneManager] - Scene switched to: "GameLogic Example #3 - Finite State Machine"
+[12:28:56] [SceneManager] - Exiting scene -
+[12:28:56] 
+[12:28:56] [SceneManager] - Scene switched to: "GameLogic Example #4 - Path Finding"
+[12:29:08] [SceneManager] - Exiting scene -
+[12:29:08] 
+[12:29:08] [SceneManager] - Scene switched to: "GameLogic Example #1 - Path Following"
+[12:29:10] [SceneManager] - Exiting scene -
+[12:29:10] 
+[12:29:10] [SceneManager] - Scene switched to: "GameLogic Example #2 - Angle Computation"
+[12:29:11] [SceneManager] - Exiting scene -
+[12:29:11] 
+[12:29:11] [SceneManager] - Scene switched to: "GameLogic Example #1 - Path Following"
+[12:29:15] [SceneManager] Closing scene manager

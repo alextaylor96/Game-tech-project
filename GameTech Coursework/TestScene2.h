@@ -36,7 +36,7 @@ public:
 
 		ball = CommonUtils::BuildSphereObject(
 			"sphere",
-			Vector3(5.0f, 5.0f, 0.0f), 0.5f , true, 0.5f, true, true, Vector4(1, 0, 0, 1)
+			Vector3(5.0f, 2.0f, 0.0f), 0.5f , true, 0.5f, true, true, Vector4(1, 0, 0, 1)
 		);
 
 		this->AddGameObject(ball);
@@ -44,7 +44,7 @@ public:
 		GameObject* attachedTo;
 
 		attachedTo = CommonUtils::BuildSphereObject("",
-			Vector3(0.f, 10.f, 0.0f),				//Position
+			Vector3(0.f, 7.f, 0.0f),				//Position
 			0.1f,									//Radius
 			true,									//Has Physics Object
 			0.1f,									//Inverse Mass = 1 / 10 kg mass (For creating rotational inertia tensor)

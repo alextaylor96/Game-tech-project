@@ -90,13 +90,22 @@ void PrintStatusEntries()
 
 //create sphere at the camera acceletating in same direction
 void fireSphere() {
-	
-	SceneManager::Instance()->GetCurrentScene()->AddGameObject(CommonUtils::BuildSphereObject(
+	GameObject* newBall;
+
+	newBall = CommonUtils::BuildSphereObject(
 		"cameraSpawnedSphere",
 		GraphicsPipeline::Instance()->GetCamera()->GetPosition(), 0.5f, true, 0.5f, true, true, Vector4(0, 0, 1, 1)
-	));
+	);
+
+	SceneManager::Instance()->GetCurrentScene()->AddGameObject(newBall);
 	//make fire in correct direction
-	//SceneManager::Instance()->GetCurrentScene()->FindGameObject("cameraSpawnedSphere")->Physics()->SetForce(Vector3(GraphicsPipeline::Instance()->GetCamera()->GetYaw(), GraphicsPipeline::Instance()->GetCamera()->GetPitch(),0));
+	newBall->Physics()->SetLinearVelocity(Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetPitch(), Vector3(1, 0, 0)) * 
+		Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetYaw(), Vector3(0, 1, 0))
+		* Vector3(0, 0, -1) * 10
+	);
+
+
+
 }
 
 // Process Input

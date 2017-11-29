@@ -28,10 +28,49 @@ void CollisionDetectionSAT::BeginNewPair(
 
 bool CollisionDetectionSAT::AreColliding(CollisionData* out_coldata)
 {
-	/* TUTORIAL 4 CODE */
+	if (!cshapeA || !cshapeB) {
+		return false;
+	}
 
+	areColliding = false;
+	possibleColAxes.clear();
 	
-	return false;//Temporary - to avoid compiler errors
+	//get the axes in the other object
+
+	std::vector<Vector3> axes1, axes2;
+
+	cshapeA->GetCollisionAxes(pnodeB, axes1);
+	for (const Vector3& axis : axes1) {
+		AddPossibleCollisionAxis(axis);
+	}
+	cshapeB->GetCollisionAxes(pnodeA, axes2);
+	for (const Vector3& axis : axes2) {
+		AddPossibleCollisionAxis(axis);
+	}
+	//edge-edge cases
+	for (const Vector3& normal1 : axes1) {
+		for (const Vector3& normal2 : axes2) {
+			AddPossibleCollisionAxis(Vector3::Cross(normal1, normal2).Normalise());
+		}
+	}
+
+	//check each axis until false found
+	CollisionData currentColData;
+	bestColData._penetration = -FLT_MAX;
+	for (const Vector3& axis : possibleColAxes) {
+		if (!CheckCollisionAxis(axis, currentColData)) {
+			return false;
+		}
+		if (currentColData._penetration >= bestColData._penetration) {
+			bestColData = currentColData;
+		}
+	}
+
+	if (out_coldata) * out_coldata = bestColData;
+	//if not axis are seperating must be colliding
+	areColliding = true;
+
+	return true;
 }
 
 
@@ -49,7 +88,31 @@ bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3& axis, CollisionDat
 	//	IF	 A < C AND B > C (Overlap in order object 1 -> object 2)
 	//	IF	 C < A AND D > A (Overlap in order object 2 -> object 1)
 
-	/* TUTORIAL 4 CODE */
+	Vector3 min1, min2, max1, max2;
+
+	cshapeA->GetMinMaxVertexOnAxis(axis, min1, max1);
+	cshapeB->GetMinMaxVertexOnAxis(axis, min2, max2);
+
+	float A = Vector3::Dot(axis, min1);
+	float B = Vector3::Dot(axis, max1);
+	float C = Vector3::Dot(axis, min2);
+	float D = Vector3::Dot(axis, max2);
+
+	if (A <= C && B >= C) {
+		out_coldata._normal = axis;
+		out_coldata._penetration = C - B;
+		out_coldata._pointOnPlane = max1 + out_coldata._normal * out_coldata._penetration;
+
+		return true;
+	}
+
+	if (C <= A && D >= A) {
+		out_coldata._normal = -axis;
+		out_coldata._penetration = A - D;
+		out_coldata._pointOnPlane = min1 + out_coldata._normal * out_coldata._penetration;
+
+		return true;
+	}
 
 	return false;
 }

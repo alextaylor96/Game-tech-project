@@ -134,16 +134,19 @@ void PhysicsEngine::UpdatePhysics()
 	NarrowPhaseCollisions();
 	perfNarrowphase.EndTimingSection();
 
+	std::random_shuffle(manifolds.begin(), manifolds.end());
+	std::random_shuffle(constraints.begin(), constraints.end());
 
 //3. Initialize Constraint Params (precompute elasticity/baumgarte factor etc)
 	//Optional step to allow constraints to 
 	// precompute values based off current velocities 
 	// before they are updated loop below.
-	for (Constraint* c : constraints) c->PreSolverStep(updateTimestep);
 
 	for (Manifold* m : manifolds) m->PreSolverStep(updateTimestep);
-	for (Constraint* c : constraints) c->ApplyImpulse();
 
+	for (Constraint* c : constraints) c->PreSolverStep(updateTimestep);
+
+	
 //4. Update Velocities
 	perfUpdate.BeginTimingSection();
 	for (PhysicsNode* obj : physicsNodes) obj->IntegrateForVelocity(updateTimestep);
@@ -154,10 +157,11 @@ void PhysicsEngine::UpdatePhysics()
 	for (Constraint* c : constraints) c->ApplyImpulse();
 	perfSolver.EndTimingSection();
 
-
-	for (Manifold* m : manifolds) m->ApplyImpulse();
-	for (Constraint* c : constraints) c->ApplyImpulse();
-
+	for (size_t i = 0; i < SOLVER_ITERATIONS; ++i) {
+		for (Manifold* m : manifolds) m->ApplyImpulse();
+		for (Constraint* c : constraints) c->ApplyImpulse();
+	}
+	
 //6. Update Positions (with final 'real' velocities)
 	perfUpdate.BeginTimingSection();
 	for (PhysicsNode* obj : physicsNodes) obj->IntegrateForPosition(updateTimestep);

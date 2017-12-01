@@ -193,6 +193,7 @@ int main()
 
 		//Finish Timing
 		timer_total.EndTimingSection();		
+
 	}
 
 	//Cleanup

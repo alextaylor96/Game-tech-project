@@ -243,7 +243,16 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 				if (okA && okB)
 				{
-					/* TUTORIAL 5 CODE */
+					Manifold* manifold = new Manifold();
+					manifold->Initiate(cp.pObjectA, cp.pObjectB);
+					colDetect.GenContactPoints(manifold);
+
+					if (manifold->contactPoints.size() > 0) {
+						manifolds.push_back(manifold);
+					}
+					else {
+						delete manifold;
+					}
 				}
 			}
 		}

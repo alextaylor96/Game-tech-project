@@ -6,6 +6,7 @@
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\PhysicsEngine.h>
+#include <ncltech\Octree.h>
 
 class Phy7_Solver : public Scene
 {
@@ -56,10 +57,8 @@ public:
 				this->AddGameObject(cube);
 			}
 		}
-		
-
+		tree = new Octree(m_vpObjects);
 	}
-
 
 	virtual void OnUpdateScene(float dt) override
 	{
@@ -69,6 +68,8 @@ public:
 
 		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "--- Controls ---");
 		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "    Stack Height : %2d ([1]/[2] to change)", m_StackHeight);
+
+		tree->root->DebugDraw();
 
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1))
 		{
@@ -82,4 +83,7 @@ public:
 			SceneManager::Instance()->JumpToScene(SceneManager::Instance()->GetCurrentSceneIndex());
 		}
 	}
+
+
+	Octree* tree = nullptr;
 };

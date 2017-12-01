@@ -8,7 +8,7 @@ public:
 	//gets called only when creating the first node
 	Node() {
 		m_region._max = Vector3(20.f, 20.f, 20.f);
-		m_region._min = Vector3(-20.f, -20.f, 0.f);
+		m_region._min = Vector3(-20.f, 0.f, -20.f);
 	}
 
 	Node(Node* parent, Vector3 max, Vector3 min) {

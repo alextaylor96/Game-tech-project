@@ -141,6 +141,8 @@ void PhysicsEngine::UpdatePhysics()
 	// before they are updated loop below.
 	for (Constraint* c : constraints) c->PreSolverStep(updateTimestep);
 
+	for (Manifold* m : manifolds) m->PreSolverStep(updateTimestep);
+	for (Constraint* c : constraints) c->ApplyImpulse();
 
 //4. Update Velocities
 	perfUpdate.BeginTimingSection();
@@ -151,6 +153,10 @@ void PhysicsEngine::UpdatePhysics()
 	perfSolver.BeginTimingSection();
 	for (Constraint* c : constraints) c->ApplyImpulse();
 	perfSolver.EndTimingSection();
+
+
+	for (Manifold* m : manifolds) m->ApplyImpulse();
+	for (Constraint* c : constraints) c->ApplyImpulse();
 
 //6. Update Positions (with final 'real' velocities)
 	perfUpdate.BeginTimingSection();

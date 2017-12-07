@@ -186,22 +186,6 @@ void CollisionDetectionSAT::GenContactPoints(Manifold* out_manifold)
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool CollisionDetectionSAT::AddPossibleCollisionAxis(Vector3 axis)
 {
 	const float epsilon = 1e-6f;

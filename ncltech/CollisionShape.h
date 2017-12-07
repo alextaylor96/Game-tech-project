@@ -85,6 +85,9 @@ public:
 		Vector3& out_normal,
 		std::vector<Plane>& out_adjacent_planes) const = 0;
 
+
+	virtual float GetRadius() { return -1; };
+
 protected:
 	PhysicsNode* m_Parent;
 };

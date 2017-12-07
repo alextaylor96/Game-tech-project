@@ -71,6 +71,9 @@ public:
 		std::vector<Plane>& out_adjacent_planes) const override;
 
 
+	float GetRadius() {
+		return max(max(halfDims.x, halfDims.y), halfDims.z);
+	}
 
 protected:
 	//Constructs the static cube hull 

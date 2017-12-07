@@ -137,7 +137,7 @@ public:
 
 
 public:
-	
+	PhysicsNode*				physicsNode;
 
 protected:
 	//Scene  
@@ -146,5 +146,5 @@ protected:
 
 	//Components
 	RenderNode*					renderNode;
-	PhysicsNode*				physicsNode;
+	//PhysicsNode*				physicsNode;
 };

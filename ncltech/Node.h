@@ -3,6 +3,8 @@
 #include "BoundingBox.h"
 #include "Scene.h"
 
+#define THRESHOLD 5
+
 class Node{
 public:
 	//gets called only when creating the first node
@@ -22,13 +24,17 @@ public:
 	//draws the nodes bounding box
 	void DebugDraw();
 
+	//create 8 child nodes
 	void createChildren();
+
+	//sort the objects in this node into its children
+	void sortObjects();
 
 	//the region of the box
 	BoundingBox m_region;
 
 	//physics objects in this box
-	vector<GameObject*> m_objects;
+	vector<PhysicsNode*> m_objects;
 
 	//the possible child nodes of this node(up to 8)
 	vector<Node> m_childNodes;

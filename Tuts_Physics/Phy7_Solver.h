@@ -57,7 +57,7 @@ public:
 				this->AddGameObject(cube);
 			}
 		}
-		tree = new Octree(m_vpObjects);
+	//	tree = new Octree(m_vpObjects);
 	}
 
 	virtual void OnUpdateScene(float dt) override
@@ -69,7 +69,7 @@ public:
 		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "--- Controls ---");
 		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "    Stack Height : %2d ([1]/[2] to change)", m_StackHeight);
 
-		tree->root->DebugDraw();
+		//tree->root->DebugDraw();
 
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1))
 		{
@@ -83,9 +83,7 @@ public:
 			SceneManager::Instance()->JumpToScene(SceneManager::Instance()->GetCurrentSceneIndex());
 		}
 
-		tree->update();
+		//tree->update();
 	}
 
-
-	Octree* tree = nullptr;
 };

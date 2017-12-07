@@ -5,7 +5,10 @@
 #include <nclgl\Window.h>
 #include <omp.h>
 #include <algorithm>
+#include "Octree.h"
 
+
+Octree* tree = nullptr;
 
 void PhysicsEngine::SetDefaults()
 {
@@ -21,8 +24,10 @@ PhysicsEngine::PhysicsEngine()
 	//Variables set here will /not/ be reset with each scene
 	isPaused = false;  
 	debugDrawFlags = DEBUGDRAW_FLAGS_MANIFOLD | DEBUGDRAW_FLAGS_CONSTRAINT;
-
+	
 	SetDefaults();
+
+	tree = new Octree(physicsNodes);
 }
 
 PhysicsEngine::~PhysicsEngine()
@@ -33,6 +38,8 @@ PhysicsEngine::~PhysicsEngine()
 void PhysicsEngine::AddPhysicsObject(PhysicsNode* obj)
 {
 	physicsNodes.push_back(obj);
+	tree->addObject(obj);
+	
 }
 
 void PhysicsEngine::RemovePhysicsObject(PhysicsNode* obj)
@@ -117,10 +124,11 @@ void PhysicsEngine::UpdatePhysics()
 	perfBroadphase.UpdateRealElapsedTime(updateTimestep);
 	perfNarrowphase.UpdateRealElapsedTime(updateTimestep);
 	perfSolver.UpdateRealElapsedTime(updateTimestep);
-
-
-
-
+	 
+//	tree->update();
+	tree->root->DebugDraw();
+	
+	
 	//A whole physics engine in 6 simple steps =D
 	
 	//-- Using positions from last frame --

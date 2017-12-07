@@ -27,7 +27,7 @@ PhysicsEngine::PhysicsEngine()
 	
 	SetDefaults();
 
-	tree = new Octree(physicsNodes);
+	tree = new Octree(&physicsNodes);
 }
 
 PhysicsEngine::~PhysicsEngine()
@@ -38,8 +38,6 @@ PhysicsEngine::~PhysicsEngine()
 void PhysicsEngine::AddPhysicsObject(PhysicsNode* obj)
 {
 	physicsNodes.push_back(obj);
-	tree->addObject(obj);
-	
 }
 
 void PhysicsEngine::RemovePhysicsObject(PhysicsNode* obj)
@@ -78,6 +76,8 @@ void PhysicsEngine::RemoveAllPhysicsObjects()
 		if (obj->GetParent()) obj->GetParent()->SetPhysics(NULL);
 		delete obj;
 	}
+
+	//delete the existing tree
 	physicsNodes.clear();
 }
 
@@ -125,7 +125,7 @@ void PhysicsEngine::UpdatePhysics()
 	perfNarrowphase.UpdateRealElapsedTime(updateTimestep);
 	perfSolver.UpdateRealElapsedTime(updateTimestep);
 	 
-//	tree->update();
+	tree->update();
 	tree->root->DebugDraw();
 	
 	

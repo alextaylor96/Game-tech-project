@@ -118,26 +118,29 @@ void Node::sortObjects()
 {
 	for (int i = 0; i < m_objects.size(); ++i) {
 		Vector3 objPos = m_objects.at(i)->GetPosition();
-		float objRad = m_objects.at(i)->GetCollisionShape()->GetRadius();
-		//check if current object is in any of the child nodes
-		for (int j = 0; j < m_childNodes.size(); ++j) {
-			float maxX = m_childNodes.at(j).m_region._max.x + objRad;
-			float maxY = m_childNodes.at(j).m_region._max.y + objRad;
-			float maxZ = m_childNodes.at(j).m_region._max.z + objRad;
+		if (m_objects.at(i)->GetCollisionShape() != NULL) {
+			float objRad = m_objects.at(i)->GetCollisionShape()->GetRadius();
 
-			float minX = m_childNodes.at(j).m_region._min.x - objRad;
-			float minY = m_childNodes.at(j).m_region._min.y - objRad;
-			float minZ = m_childNodes.at(j).m_region._min.z - objRad;
-			
-			if (objPos.x <= maxX && objPos.x >= minX) {
-				if (objPos.y <= maxY && objPos.y >= minY) {
-					if (objPos.z <= maxZ && objPos.z >= minZ) {
-						//inside the node
-						m_childNodes.at(j).m_objects.push_back(m_objects.at(i));
+			//check if current object is in any of the child nodes
+			for (int j = 0; j < m_childNodes.size(); ++j) {
+				float maxX = m_childNodes.at(j).m_region._max.x + objRad;
+				float maxY = m_childNodes.at(j).m_region._max.y + objRad;
+				float maxZ = m_childNodes.at(j).m_region._max.z + objRad;
+
+				float minX = m_childNodes.at(j).m_region._min.x - objRad;
+				float minY = m_childNodes.at(j).m_region._min.y - objRad;
+				float minZ = m_childNodes.at(j).m_region._min.z - objRad;
+
+				if (objPos.x <= maxX && objPos.x >= minX) {
+					if (objPos.y <= maxY && objPos.y >= minY) {
+						if (objPos.z <= maxZ && objPos.z >= minZ) {
+							//inside the node
+							m_childNodes.at(j).m_objects.push_back(m_objects.at(i));
+						}
 					}
 				}
-			}
 
+			}
 		}
 	}
 	//all objects sorted into children

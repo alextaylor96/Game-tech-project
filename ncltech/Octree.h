@@ -9,10 +9,10 @@ class Octree
 {
 public:
 	//creates the new octree 
-	Octree(std::vector<PhysicsNode*> &objects) {
+	Octree(std::vector<PhysicsNode*> *objects) {
 		m_objects = objects;
 		root = new Node();
-		root->m_objects = m_objects;
+		root->m_objects = *m_objects;
 		root->createChildren();
 	}
 
@@ -23,18 +23,18 @@ public:
 		delete root;
 
 		root = new Node();
-		root->m_objects = m_objects;
+		root->m_objects = *m_objects;
 
 		root->createChildren();
 	}
 
 	void addObject(PhysicsNode* obj) {
-		m_objects.push_back(obj);
+		m_objects->push_back(obj);
 	}
 
 
 	//physics objects in this octree
-	vector<PhysicsNode*> m_objects;
+	vector<PhysicsNode*>* m_objects;
 	//the root node
 	Node* root;
 };

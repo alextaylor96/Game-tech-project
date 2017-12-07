@@ -12,6 +12,7 @@ public:
 	Octree(std::vector<GameObject*> &objects) {
 		m_objects = objects;
 		root = new Node();
+		root->createChildren();
 	}
 
 	~Octree();

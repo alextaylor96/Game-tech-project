@@ -13,62 +13,16 @@ public:
 
 	Node(Node* parent, Vector3 max, Vector3 min) {
 		m_parent = parent;
+		m_region._max = max;
+		m_region._min = min;
 	}
 
-	~Node();
+	~Node() {};
 
 	//draws the nodes bounding box
-	void DebugDraw() {
-			//NCLDebug::DrawThickLine(Vector3(0.f, 0.f, 0.f), Vector3(10.f, 10.f, 0.f), 0.01f, Vector4(0.f, 0.f, 0.f, 1.f));
+	void DebugDraw();
 
-			NCLDebug::DrawThickLine(Vector3(m_region._max.x, m_region._max.y, m_region._max.z), 
-				Vector3(m_region._min.x, m_region._max.y, m_region._max.z),
-				0.02f,Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._max.x, m_region._max.y, m_region._max.z),
-				Vector3(m_region._max.x, m_region._min.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._max.x, m_region._max.y, m_region._max.z),
-				Vector3(m_region._max.x, m_region._max.y, m_region._min.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._min.y, m_region._min.z),
-				Vector3(m_region._max.x, m_region._min.y, m_region._min.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-	
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._min.y, m_region._min.z),
-				Vector3(m_region._min.x, m_region._min.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._min.y, m_region._min.z),
-				Vector3(m_region._min.x, m_region._max.y, m_region._min.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._max.y, m_region._min.z),
-				Vector3(m_region._max.x, m_region._max.y, m_region._min.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._max.y, m_region._min.z),
-				Vector3(m_region._min.x, m_region._max.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._max.x, m_region._max.y, m_region._min.z),
-				Vector3(m_region._max.x, m_region._min.y, m_region._min.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._min.y, m_region._max.z),
-				Vector3(m_region._min.x, m_region._max.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._min.x, m_region._min.y, m_region._max.z),
-				Vector3(m_region._max.x, m_region._min.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-
-			NCLDebug::DrawThickLine(Vector3(m_region._max.x, m_region._min.y, m_region._min.z),
-				Vector3(m_region._max.x, m_region._min.y, m_region._max.z),
-				0.02f, Vector4(0.f, 0.f, 0.f, 1.f));
-	}
+	void createChildren();
 
 	//the region of the box
 	BoundingBox m_region;
@@ -77,7 +31,7 @@ public:
 	vector<GameObject*> m_objects;
 
 	//the possible child nodes of this node(up to 8)
-	vector<Node*> m_childNodes;
+	vector<Node> m_childNodes;
 
 	//the smallest the bounding box can be
 	const int minSize = 1;

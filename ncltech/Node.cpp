@@ -1,5 +1,18 @@
 #include "Node.h"
 
+void Node::getPossibleCollisions(vector<vector<PhysicsNode*>>* nodeObj)
+{
+	if (m_childNodes.size() > 0) {
+		for (int i = 0; i < m_childNodes.size(); ++i) {
+			m_childNodes.at(i).getPossibleCollisions(nodeObj);
+		}
+	}
+	else if(m_objects.size() > 1){
+		nodeObj->push_back(m_objects);
+	}
+	
+}
+
 void Node::DebugDraw()
 {
 	for (int i = 0; i < m_childNodes.size(); ++i) {
@@ -118,6 +131,7 @@ void Node::sortObjects()
 {
 	for (int i = 0; i < m_objects.size(); ++i) {
 		Vector3 objPos = m_objects.at(i)->GetPosition();
+		//check the object has a collision shape because if not no need to worry about it
 		if (m_objects.at(i)->GetCollisionShape() != NULL) {
 			float objRad = m_objects.at(i)->GetCollisionShape()->GetRadius();
 

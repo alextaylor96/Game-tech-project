@@ -189,25 +189,55 @@ void PhysicsEngine::BroadPhaseCollisions()
 	//	Brute force approach.
 	//  - For every object A, assume it could collide with every other object.. 
 	//    even if they are on the opposite sides of the world.
-	if (physicsNodes.size() > 0)
+	//if (physicsNodes.size() > 0)
+	//{
+	//	for (size_t i = 0; i < physicsNodes.size() - 1; ++i)
+	//	{
+	//		for (size_t j = i + 1; j < physicsNodes.size(); ++j)
+	//		{
+	//			pnodeA = physicsNodes[i];
+	//			pnodeB = physicsNodes[j];
+
+	//			//Check they both atleast have collision shapes
+	//			if (pnodeA->GetCollisionShape() != NULL
+	//				&& pnodeB->GetCollisionShape() != NULL)
+	//			{
+	//				CollisionPair cp;
+	//				cp.pObjectA = pnodeA;
+	//				cp.pObjectB = pnodeB;
+	//				broadphaseColPairs.push_back(cp);
+	//			}
+
+	//		}
+	//	}
+	//}
+
+
+	//octree to build pairs
+	vector<vector<PhysicsNode*>> possiblePairs = tree->getPossibleCollisions();
+
+	for (int k = 0; k < possiblePairs.size(); ++k)
 	{
-		for (size_t i = 0; i < physicsNodes.size() - 1; ++i)
+		if (possiblePairs.at(k).size() > 0)
 		{
-			for (size_t j = i + 1; j < physicsNodes.size(); ++j)
+			for (size_t i = 0; i < possiblePairs.at(k).size() - 1; ++i)
 			{
-				pnodeA = physicsNodes[i];
-				pnodeB = physicsNodes[j];
-
-				//Check they both atleast have collision shapes
-				if (pnodeA->GetCollisionShape() != NULL
-					&& pnodeB->GetCollisionShape() != NULL)
+				for (size_t j = i + 1; j < possiblePairs.at(k).size(); ++j)
 				{
-					CollisionPair cp;
-					cp.pObjectA = pnodeA;
-					cp.pObjectB = pnodeB;
-					broadphaseColPairs.push_back(cp);
-				}
+					pnodeA = possiblePairs.at(k)[i];
+					pnodeB = possiblePairs.at(k)[j];
 
+					//Check they both atleast have collision shapes
+					if (pnodeA->GetCollisionShape() != NULL
+						&& pnodeB->GetCollisionShape() != NULL)
+					{
+						CollisionPair cp;
+						cp.pObjectA = pnodeA;
+						cp.pObjectB = pnodeB;
+						broadphaseColPairs.push_back(cp);
+					}
+
+				}
 			}
 		}
 	}

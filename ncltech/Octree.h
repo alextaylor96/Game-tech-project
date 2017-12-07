@@ -28,8 +28,11 @@ public:
 		root->createChildren();
 	}
 
-	void addObject(PhysicsNode* obj) {
-		m_objects->push_back(obj);
+	//returns vector of physics nodes that could be colliding
+	vector<vector<PhysicsNode*>> getPossibleCollisions() {
+		vector<vector<PhysicsNode*>> nodesObjs;
+		root->getPossibleCollisions(&nodesObjs);
+		return nodesObjs;
 	}
 
 

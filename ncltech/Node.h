@@ -21,6 +21,8 @@ public:
 
 	~Node() {};
 
+	void getPossibleCollisions(vector<vector<PhysicsNode*>>* nodeObj);
+
 	//draws the nodes bounding box
 	void DebugDraw();
 

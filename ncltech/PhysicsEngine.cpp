@@ -214,6 +214,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 
 
 	//octree to build pairs
+	//maybe ask about this because kind of doesnt speed up much
 	vector<vector<PhysicsNode*>> possiblePairs = tree->getPossibleCollisions();
 
 	for (int k = 0; k < possiblePairs.size(); ++k)

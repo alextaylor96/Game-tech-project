@@ -158,7 +158,12 @@ void Node::sortObjects()
 		}
 	}
 	//all objects sorted into children
+	//minium bucket size
+	if (((m_region._max - m_region._min).Length() < 10.0f)) {
+		return;
+	}
 	for (int k = 0; k < m_childNodes.size(); ++k) {
+
 		if (m_childNodes.at(k).m_objects.size() >= THRESHOLD) {
 			m_childNodes.at(k).createChildren();
 		}

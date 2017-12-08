@@ -3,7 +3,7 @@
 #include "BoundingBox.h"
 #include "Scene.h"
 
-#define THRESHOLD 5
+#define THRESHOLD 2
 
 class Node{
 public:

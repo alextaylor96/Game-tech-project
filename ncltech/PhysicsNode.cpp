@@ -4,23 +4,25 @@
 
 void PhysicsNode::IntegrateForVelocity(float dt)
 {
-	//gravity
-	if (invMass > 0.0f) {
-		linVelocity += PhysicsEngine::Instance()->GetGravity() * dt;
-	}
+	
+		//gravity
+		if (invMass > 0.0f) {
+			linVelocity += PhysicsEngine::Instance()->GetGravity() * dt;
+		}
 
-	//semi implicit euler
-	//TODO replace with rk4 if time
-	linVelocity += force * invMass * dt;
+		//semi implicit euler
+		//TODO replace with rk4 if time
+		linVelocity += force * invMass * dt;
 
-	//velocity damping
-	linVelocity = linVelocity * PhysicsEngine::Instance()->GetDampingFactor();
+		//velocity damping
+		linVelocity = linVelocity * PhysicsEngine::Instance()->GetDampingFactor();
 
-	//angular rotation
-	angVelocity += invInertia * torque * dt;
+		//angular rotation
+		angVelocity += invInertia * torque * dt;
 
-	//angular velocity damping
-	angVelocity = angVelocity *  PhysicsEngine::Instance()->GetDampingFactor();
+		//angular velocity damping
+		angVelocity = angVelocity *  PhysicsEngine::Instance()->GetDampingFactor();
+	
 }
 
 /* Between these two functions the physics engine will solve for velocity
@@ -30,20 +32,22 @@ void PhysicsNode::IntegrateForVelocity(float dt)
 
 void PhysicsNode::IntegrateForPosition(float dt)
 {
-	Vector3	oldPos = position;
-	//update the position
-	position += linVelocity * dt;
+	
+		Vector3	oldPos = position;
+		//update the position
+		position += linVelocity * dt;
 
-	//update orientation
-	orientation = orientation + Quaternion(angVelocity * dt * 0.5f, 0.0f) * orientation;
+		//update orientation
+		orientation = orientation + Quaternion(angVelocity * dt * 0.5f, 0.0f) * orientation;
 
-	orientation.Normalise();
+		orientation.Normalise();
 
-	if (oldPos == position) {
-		atRest = true;
-	}
-	//Finally: Notify any listener's that this PhysicsNode has a new world transform.
-	// - This is used by GameObject to set the worldTransform of any RenderNode's. 
-	//   Please don't delete this!!!!!
-	FireOnUpdateCallback();
+		if (oldPos == position) {
+			atRest = true;
+		}
+		//Finally: Notify any listener's that this PhysicsNode has a new world transform.
+		// - This is used by GameObject to set the worldTransform of any RenderNode's. 
+		//   Please don't delete this!!!!!
+		FireOnUpdateCallback();
+	
 }

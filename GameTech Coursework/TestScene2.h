@@ -125,7 +125,7 @@ public:
 		}
 
 		for (int i = 0; i < clothNodes.size() - clothDimensions; i += clothDimensions) {
-			for (int j = 0; j < clothDimensions; ++j) {
+			for (int j = 1; j < clothDimensions; ++j) {
 				DistanceConstraint* constraint = new DistanceConstraint(
 					clothNodes.at(i + j)->Physics(),					//Physics Object A
 					clothNodes.at(i + j + clothDimensions - 1)->Physics(),					//Physics Object B

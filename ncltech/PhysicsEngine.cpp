@@ -188,6 +188,9 @@ void PhysicsEngine::BroadPhaseCollisions()
 
 	//do rest broadphase here
 
+
+
+
 	//octree to build pairs
 	//maybe ask about this because kind of doesnt speed up much
 	vector<vector<PhysicsNode*>> possiblePairs = tree->getPossibleCollisions();
@@ -203,16 +206,17 @@ void PhysicsEngine::BroadPhaseCollisions()
 					pnodeA = possiblePairs.at(k)[i];
 					pnodeB = possiblePairs.at(k)[j];
 
-					//Check they both atleast have collision shapes
+					//Check they both atleast have collision shapes and atleast one isnt at rest
 					if (pnodeA->GetCollisionShape() != NULL
-						&& pnodeB->GetCollisionShape() != NULL)
+						&& pnodeB->GetCollisionShape() != NULL
+						&& (!pnodeA->getRestState() || !pnodeB->getRestState()))
 					{
 						CollisionPair cp;
 						cp.pObjectA = pnodeA;
 						cp.pObjectB = pnodeB;
+
 						broadphaseColPairs.push_back(cp);
 					}
-
 				}
 			}
 		}
@@ -264,6 +268,9 @@ void PhysicsEngine::NarrowPhaseCollisions()
 				//Check to see if any of the objects have a OnCollision callback that dont want the objects to physically collide
 				bool okA = cp.pObjectA->FireOnCollisionEvent(cp.pObjectA, cp.pObjectB);
 				bool okB = cp.pObjectB->FireOnCollisionEvent(cp.pObjectB, cp.pObjectA);
+
+				cp.pObjectA->setRestState(false);
+				cp.pObjectB->setRestState(false);
 
 				if (okA && okB)
 				{

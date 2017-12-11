@@ -154,6 +154,13 @@ public:
 		if (onUpdateCallback) onUpdateCallback(worldTransform);
 	}
 	
+	bool getRestState() {
+		return atRest;
+	}
+
+	void setRestState(bool state) {
+		atRest = state;
+	}
 
 protected:
 	//Useful parameters
@@ -187,4 +194,5 @@ protected:
 	float				elasticity;		///Value from 0-1 definiing how much the object bounces off other objects
 	float				friction;		///Value from 0-1 defining how much the object can slide off other objects
 
+	bool atRest = false;
 };

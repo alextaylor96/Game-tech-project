@@ -30,6 +30,7 @@ void PhysicsNode::IntegrateForVelocity(float dt)
 
 void PhysicsNode::IntegrateForPosition(float dt)
 {
+	Vector3	oldPos = position;
 	//update the position
 	position += linVelocity * dt;
 
@@ -38,6 +39,9 @@ void PhysicsNode::IntegrateForPosition(float dt)
 
 	orientation.Normalise();
 
+	if (oldPos == position) {
+		atRest = true;
+	}
 	//Finally: Notify any listener's that this PhysicsNode has a new world transform.
 	// - This is used by GameObject to set the worldTransform of any RenderNode's. 
 	//   Please don't delete this!!!!!

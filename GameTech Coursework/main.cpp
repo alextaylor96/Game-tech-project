@@ -191,7 +191,7 @@ int main()
 		
 
 		//Finish Timing
-		timer_total.EndTimingSection();		
+		timer_total.EndTimingSection();	
 
 	}
 

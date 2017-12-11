@@ -99,6 +99,77 @@ public:
 				ball->Physics()->GetPosition() + Vector3(-0.5f, -0.5f, -0.5f)));	//Attachment Position on Object B	-> Currently the far left edge 
 		
 
+																					//create a soft body
+			vector<GameObject*> clothNodes;
+			int clothDimensions = 10;
+
+			for (int i = 0; i < clothDimensions; ++i) {
+				for (int j = 0; j < clothDimensions; ++j) {
+					GameObject* cloth = CommonUtils::BuildSphereObject(
+						"",
+						Vector3(-5.0f + (j), 15.0f - (i), 0.0f), 0.1f, true, 0.5f, false, true, Vector4(0, 0, 1, 1)
+					);
+					//make top row cant move
+					if (i == 0) {
+						cloth->Physics()->SetInverseMass(0.0f);
+					}
+					this->AddGameObject(cloth);
+					clothNodes.push_back(cloth);
+				}
+			}
+
+			//add constraint between each node and the node below it
+			for (int i = 0; i < clothNodes.size() - clothDimensions; i += clothDimensions) {
+				for (int j = 0; j < clothDimensions; ++j) {
+					DistanceConstraint* constraint = new DistanceConstraint(
+						clothNodes.at(i + j)->Physics(),					//Physics Object A
+						clothNodes.at(i + j + clothDimensions)->Physics(),					//Physics Object B
+						clothNodes.at(i + j)->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+						clothNodes.at(i + j + clothDimensions)->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+					PhysicsEngine::Instance()->AddConstraint(constraint);
+				}
+			}
+
+			//add constraint between each node and the node next to it
+			for (int i = 0; i < clothNodes.size(); i += clothDimensions) {
+				for (int j = 0; j < clothDimensions - 1; ++j) {
+					DistanceConstraint* constraint = new DistanceConstraint(
+						clothNodes.at(i + j)->Physics(),					//Physics Object A
+						clothNodes.at(i + j + 1)->Physics(),					//Physics Object B
+						clothNodes.at(i + j)->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+						clothNodes.at(i + j + 1)->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+					PhysicsEngine::Instance()->AddConstraint(constraint);
+				}
+			}
+
+			//add constraint between each node and the node diagonally to it
+			for (int i = 0; i < clothNodes.size() - clothDimensions; i += clothDimensions) {
+				for (int j = 0; j < clothDimensions - 1; ++j) {
+					DistanceConstraint* constraint = new DistanceConstraint(
+						clothNodes.at(i + j)->Physics(),					//Physics Object A
+						clothNodes.at(i + j +clothDimensions + 1)->Physics(),					//Physics Object B
+						clothNodes.at(i + j)->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+						clothNodes.at(i + j + 1 + clothDimensions)->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+					PhysicsEngine::Instance()->AddConstraint(constraint);
+				}
+			}
+
+			for (int i = 0; i < clothNodes.size() - clothDimensions; i += clothDimensions) {
+				for (int j = 0; j < clothDimensions ; ++j) {
+					DistanceConstraint* constraint = new DistanceConstraint(
+						clothNodes.at(i + j)->Physics(),					//Physics Object A
+						clothNodes.at(i + j + clothDimensions - 1)->Physics(),					//Physics Object B
+						clothNodes.at(i + j)->Physics()->GetPosition(),	//Attachment Position on Object A	-> Currently the centre
+						clothNodes.at(i + j + clothDimensions - 1)->Physics()->GetPosition());	//Attachment Position on Object B	-> Currently the centre  
+
+					PhysicsEngine::Instance()->AddConstraint(constraint);
+				}
+			}
+
+
 
 	}
 

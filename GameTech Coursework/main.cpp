@@ -15,6 +15,7 @@ bool show_perf_metrics = false;
 PerfTimer timer_total, timer_physics, timer_update, timer_render;
 uint shadowCycleKey = 4;
 
+int score = 0;
 
 // Program Deconstructor
 //  - Releases all global components and memory
@@ -75,6 +76,7 @@ void PrintStatusEntries()
 		SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str()
 		);
 	NCLDebug::AddStatusEntry(status_colour, "     \x01 T/Y to cycle or R to reload scene");
+	NCLDebug::AddStatusEntry(status_colour, "     \x01 J to fire sphere");
 
 	//Print Performance Timers
 	NCLDebug::AddStatusEntry(status_colour, "     FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(), show_perf_metrics ? "less" : "more");
@@ -85,6 +87,8 @@ void PrintStatusEntries()
 		timer_physics.PrintOutputToStatusEntry(status_colour, "          Physics Update :");
 		timer_render.PrintOutputToStatusEntry(status_colour, "          Render Scene   :");
 	}
+	NCLDebug::AddStatusEntry(status_colour, "");
+	NCLDebug::AddStatusEntry(status_colour, "     Current Score: %i", SceneManager::Instance()->GetCurrentScene()->getScore());
 	NCLDebug::AddStatusEntry(status_colour, "");
 }
 
@@ -132,7 +136,7 @@ void HandleKeyboardInputs()
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
 		show_perf_metrics = !show_perf_metrics;
 
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_X))
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_J))
 		fireSphere();
 }
 
@@ -147,7 +151,7 @@ int main()
 	Window::GetWindow().GetTimer()->GetTimedMS();
 
 	//Create main game-loop
-	while (Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
+	while (Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE) && !Window::GetKeyboard()->KeyDown(KEYBOARD_X)) {
 		//Start Timing
 		
 		float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f;	//How many milliseconds since last update?
@@ -175,6 +179,7 @@ int main()
 		timer_physics.BeginTimingSection();
 		PhysicsEngine::Instance()->Update(dt);
 		timer_physics.EndTimingSection();
+		PhysicsEngine::Instance()->DebugRender();
 
 		//Render Scene
 		timer_render.BeginTimingSection();

@@ -159,7 +159,7 @@ void Node::sortObjects()
 	}
 	//all objects sorted into children
 	//minium bucket size
-	if (((m_region._max - m_region._min).Length() < 10.0f)) {
+	if (((m_region._max - m_region._min).Length() < 5.0f)) {
 		return;
 	}
 	for (int k = 0; k < m_childNodes.size(); ++k) {

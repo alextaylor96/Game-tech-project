@@ -52,6 +52,8 @@ typedef std::unordered_map<void*, SceneUpdateCallback> SceneUpdateMap;
 class Scene
 {
 public:
+
+
 	Scene(const std::string& friendly_name)	//Called once at program start - all scene initialization should be done in 'OnInitializeScene'
 		: m_SceneName(friendly_name)
 	{}; 
@@ -172,6 +174,9 @@ public:
 		}
 	}
 
+	int getScore() {
+		return score;
+	}
 
 protected:
 	// Delete all contained Objects
@@ -188,6 +193,7 @@ protected:
 
 
 protected:
+	int score = 0;
 	std::string					m_SceneName;
 	std::vector<GameObject*>	m_vpObjects;
 	SceneUpdateMap				m_UpdateCallbacks;

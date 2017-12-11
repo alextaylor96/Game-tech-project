@@ -12,8 +12,6 @@ public:
 	virtual void OnCleanupScene()		 override;
 	virtual void OnUpdateScene(float dt) override;
 
-	bool OnCollisionCallback(PhysicsNode* self, PhysicsNode* otherObject);
-
 protected:
 	float m_AccumTime;
 	GameObject* m_pPlayer;

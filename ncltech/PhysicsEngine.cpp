@@ -126,7 +126,7 @@ void PhysicsEngine::UpdatePhysics()
 	perfSolver.UpdateRealElapsedTime(updateTimestep);
 	 
 	tree->update();
-	tree->root->DebugDraw();
+	
 	
 	
 	//A whole physics engine in 6 simple steps =D
@@ -287,6 +287,7 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 void PhysicsEngine::DebugRender()
 {
+	tree->root->DebugDraw();
 	// Draw all collision manifolds
 	if (debugDrawFlags & DEBUGDRAW_FLAGS_MANIFOLD)
 	{

@@ -61,6 +61,9 @@ void Initialize()
 // Print Debug Info
 //  - Prints a list of status entries to the top left
 //    hand corner of the screen each frame.
+
+bool draw_debug = true;
+
 void PrintStatusEntries()
 {
 	//Print Engine Options
@@ -77,6 +80,19 @@ void PrintStatusEntries()
 		);
 	NCLDebug::AddStatusEntry(status_colour, "     \x01 T/Y to cycle or R to reload scene");
 	NCLDebug::AddStatusEntry(status_colour, "     \x01 J to fire sphere");
+
+	//Physics Debug Drawing options
+	uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+	NCLDebug::AddStatusEntry(status_colour_header, "--- Debug Draw  [Q] ---");
+	
+		NCLDebug::AddStatusEntry(status_colour, "Constraints       : %s [1]", (drawFlags & DEBUGDRAW_FLAGS_CONSTRAINT) ? "Enabled " : "Disabled");
+		NCLDebug::AddStatusEntry(status_colour, "Collision Normals : %s [2]", (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled " : "Disabled");
+		NCLDebug::AddStatusEntry(status_colour, "Collision Volumes : %s [3]", (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled " : "Disabled");
+		NCLDebug::AddStatusEntry(status_colour, "Manifolds         : %s [4]", (drawFlags & DEBUGDRAW_FLAGS_MANIFOLD) ? "Enabled " : "Disabled");
+		NCLDebug::AddStatusEntry(status_colour, "");
+	if (draw_debug) {
+		PhysicsEngine::Instance()->DebugRender();
+	}
 
 	//Print Performance Timers
 	NCLDebug::AddStatusEntry(status_colour, "     FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(), show_perf_metrics ? "less" : "more");
@@ -138,6 +154,25 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_J))
 		fireSphere();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Q))
+		draw_debug = !draw_debug;
+	//debug draw options
+	uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1))
+		drawFlags ^= DEBUGDRAW_FLAGS_CONSTRAINT;
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_2))
+		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_3))
+		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_4))
+		drawFlags ^= DEBUGDRAW_FLAGS_MANIFOLD;
+
+	PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
+
 }
 
 
@@ -179,7 +214,7 @@ int main()
 		timer_physics.BeginTimingSection();
 		PhysicsEngine::Instance()->Update(dt);
 		timer_physics.EndTimingSection();
-		PhysicsEngine::Instance()->DebugRender();
+		
 
 		//Render Scene
 		timer_render.BeginTimingSection();

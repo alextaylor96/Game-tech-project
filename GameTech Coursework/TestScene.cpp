@@ -14,25 +14,6 @@ using namespace CommonUtils;
 2- debug drawing constraints for soft body and move onto gpu(testscene2)
 3- gpu ball pit*/
 
-bool goodHitCallbackFunction(PhysicsNode* self, PhysicsNode* collidingObject)
-{
-	if (collidingObject->GetParent()->GetName()   == "cameraSpawnedSphere") {
-		//change score
-	}
-	//Return true to enable collision resolution, for AI test's just return false so we can drop the collision pair from the system
-	return false;
-}
-
-
-bool badHitCallbackFunction(PhysicsNode* self, PhysicsNode* collidingObject)
-{
-	if (collidingObject->GetParent()->GetName() == "cameraSpawnedSphere") {
-		//change score
-	}
-	//Return true to enable collision resolution, for AI test's just return false so we can drop the collision pair from the system
-	return false;
-}
-
 TestScene::TestScene(const std::string& friendly_name)
 	: Scene(friendly_name)
 	, m_AccumTime(0.0f)
@@ -43,16 +24,6 @@ TestScene::TestScene(const std::string& friendly_name)
 TestScene::~TestScene()
 {
 
-}
-
-bool TestScene::OnCollisionCallback(PhysicsNode* self, PhysicsNode* collidingObject)
-{
-	const std::string name = "cameraSpawnedSphere";
-	if (collidingObject->GetParent()->GetName() == name) {
-		//change score
-		score += 100;
-	}
-	return true;
 }
 
 void TestScene::OnInitializeScene()
@@ -116,27 +87,18 @@ void TestScene::OnInitializeScene()
 					color);					// Render color
 
 				//set call back for score
-				//breaks collison response
-				//Method 1
-				/*cube->Physics()->SetOnCollisionCallback(goodHitCallbackFunction);*/
-	
-				//Method 2
-				//cube->Physics()->SetOnCollisionCallback(
-				//	[&](PhysicsNode* self, PhysicsNode* collidingObject) -> bool
-				//{
-				//	if (collidingObject->GetParent()->GetName() == "cameraSpawnedSphere") {
-				//		//change score
-				//		score += 10;
-				//	}
-				//	return true;
-				//}
-				//);
-
-				//Method 3
 				cube->Physics()->SetOnCollisionCallback(
-					std::bind(&TestScene::OnCollisionCallback, this, std::placeholders::_1, std::placeholders::_2)
+					[&](PhysicsNode* self, PhysicsNode* collidingObject) -> bool
+				{
+					if (collidingObject->GetParent()->GetName() == "cameraSpawnedSphere") {
+						//incraese score
+						score += 100;
+					}
+					return true;
+				}
 				);
 
+				
 				this->AddGameObject(cube);
 
 				
@@ -165,6 +127,18 @@ void TestScene::OnInitializeScene()
 						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
 						col);// Render color
+
+					sphere->Physics()->SetOnCollisionCallback(
+						[&](PhysicsNode* self, PhysicsNode* collidingObject) -> bool
+					{
+						if (collidingObject->GetParent()->GetName() == "cameraSpawnedSphere") {
+							//incraese score
+							score -= 50;
+						}
+						return true;
+					}
+					);
+
 					this->AddGameObject(sphere);
 				}
 			}

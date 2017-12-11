@@ -136,9 +136,7 @@ public:
 			}
 		}
 
-		uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
-		drawFlags |= DEBUGDRAW_FLAGS_CONSTRAINT;
-		PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
+	
 	}
 
 };

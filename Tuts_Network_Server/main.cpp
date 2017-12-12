@@ -39,6 +39,8 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <nclgl\Vector3.h>
 #include <nclgl\common.h>
 #include <ncltech\NetworkBase.h>
+#include <iostream>
+#include <string>
 
 //Needed to get computer adapter IPv4 addresses via windows
 #include <iphlpapi.h>
@@ -100,7 +102,20 @@ int main(int arcg, char** argv)
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
-				printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
+				//switch what to do depending on packet type
+				if (evnt.packet->data[0] == 's') {
+					//print is string
+					printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
+				}
+				if (evnt.packet->data[0] == 'i') {
+					//update if integer
+				    std::string stringValue = "";
+					for (int i = 2; i < (int)evnt.packet->dataLength; ++i) {
+						stringValue += (char)evnt.packet->data[i];
+					}
+					int intValue = stoi(stringValue);
+					printf("Int to use recived as: %i\n", intValue);
+				}
 				enet_packet_destroy(evnt.packet);
 				break;
 
@@ -124,9 +139,15 @@ int main(int arcg, char** argv)
 				1.5f,
 				sin(rotation) * 2.0f);
 
+			int testInt = 10;
+
 			//Create the packet and broadcast it (unreliable transport) to all clients
 			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
 			enet_host_broadcast(server.m_pNetwork, 0, position_update);
+
+			//Create the packet and broadcast it (unreliable transport) to all clients
+			ENetPacket* int_update = enet_packet_create(&testInt, sizeof(int), 0);
+			enet_host_broadcast(server.m_pNetwork, 0, int_update);
 		}
 
 		Sleep(0);

@@ -89,6 +89,7 @@ produce satisfactory results on the networked peers.
 
 const Vector3 status_color3 = Vector3(1.0f, 0.6f, 0.6f);
 const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_color3.z, 1.0f);
+int testVal = 0;
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
 	: Scene(friendly_name)
@@ -164,6 +165,8 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", network.m_OutgoingKb);
+
+	NCLDebug::AddStatusEntry(status_color, "  Test int value: %i", testVal);
 }
 
 void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
@@ -178,10 +181,16 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				NCLDebug::Log(status_color3, "Network: Successfully connected to server!");
 
 				//Send a 'hello' packet
-				char* text_data = "Hellooo!";
+				char* text_data = "s:Hellooo!";
 				ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
 				enet_peer_send(serverConnection, 0, packet);
-			}	
+			
+				////Send a maze parameter
+				char* gridSize = "i:15";
+				ENetPacket* gridSizePacket = enet_packet_create(gridSize, strlen(gridSize) + 1, 0);
+				enet_peer_send(serverConnection, 0, gridSizePacket);
+			
+			}
 		}
 		break;
 
@@ -194,6 +203,10 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				Vector3 pos;
 				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
 				box->Physics()->SetPosition(pos);
+			}
+			else if (evnt.packet->dataLength == sizeof(int))
+			{
+				memcpy(&testVal, evnt.packet->data, sizeof(int));
 			}
 			else
 			{

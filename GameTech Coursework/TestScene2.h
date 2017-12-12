@@ -74,7 +74,7 @@ public:
 			for (int j = 0; j < clothDimensions; ++j) {
 				GameObject* cloth = CommonUtils::BuildSphereObject(
 					"",
-					Vector3(-5.0f + (j), 15.0f - (i), 0.0f), 0.1f, true, 0.5f, false, true, Vector4(0, 0, 1, 1)
+					Vector3(-5.0f + (j * 0.5), 15.0f - (i* 0.5), 0.0f), 0.1f, true, 0.5f, false, true, Vector4(0, 0, 1, 1)
 				);
 				//make top row cant move
 				if (i == 0) {

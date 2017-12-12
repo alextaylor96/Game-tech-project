@@ -120,7 +120,7 @@ void fireSphere() {
 	
 	//make fire in correct direction
 	newBall->Physics()->SetLinearVelocity(Matrix4::Rotation(GraphicsPipeline::Instance()->GetCamera()->GetPitch(), Vector3(1, 0,0)) * 
-		Matrix3::Inverse(GraphicsPipeline::Instance()->GetCamera()->BuildViewMatrix()) * Vector3(0, 0, -1) * 10
+		Matrix3::Inverse(GraphicsPipeline::Instance()->GetCamera()->BuildViewMatrix()) * Vector3(0, 0, -1) * 20
 	);
 
 	SceneManager::Instance()->GetCurrentScene()->AddGameObject(newBall);

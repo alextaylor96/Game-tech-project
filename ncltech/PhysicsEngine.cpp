@@ -209,7 +209,8 @@ void PhysicsEngine::BroadPhaseCollisions()
 					//Check they both atleast have collision shapes and atleast one isnt at rest
 					if (pnodeA->GetCollisionShape() != NULL
 						&& pnodeB->GetCollisionShape() != NULL
-						&& (!pnodeA->getRestState() || !pnodeB->getRestState()))
+						//causes problems with floor collision
+						/*&& (!pnodeA->getRestState() || !pnodeB->getRestState())*/)
 					{
 						CollisionPair cp;
 						cp.pObjectA = pnodeA;

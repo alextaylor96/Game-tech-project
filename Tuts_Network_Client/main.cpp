@@ -98,6 +98,12 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_R))
 		SceneManager::Instance()->JumpToScene(sceneIdx);
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1))
+		SceneManager::Instance()->GetCurrentScene()->increaseGridSize();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_2))
+		SceneManager::Instance()->GetCurrentScene()->decreaseGridSize();
 }
 
 

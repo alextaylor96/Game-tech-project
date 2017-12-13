@@ -65,6 +65,10 @@ public:
 	}
 
 
+	virtual void increaseGridSize() {}
+	virtual void decreaseGridSize() {}
+
+
 	// Called when scene is being activated, and will begin being rendered/updated. 
 	//	 - Initialize objects/physics here
 	virtual void OnInitializeScene()	{}		

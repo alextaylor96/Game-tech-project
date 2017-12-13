@@ -11,6 +11,10 @@ class Net1_Client : public Scene
 public:
 	Net1_Client(const std::string& friendly_name);
 
+	void increaseGridSize();
+
+	void decreaseGridSize();
+
 	virtual void OnInitializeScene() override;
 	virtual void OnCleanupScene() override;
 	virtual void OnUpdateScene(float dt) override;

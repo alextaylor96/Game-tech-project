@@ -121,6 +121,31 @@ Net1_Client::Net1_Client(const std::string& friendly_name)
 {
 }
 
+void Net1_Client::increaseGridSize() {
+	if (gridSize < 20) {
+		gridSize++;
+		////Send a maze parameter
+		gridSizePacket p;
+		p.size = gridSize;
+		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
+		enet_peer_send(serverConnection, 0, gridSize);
+		this->RemoveGameObject(render);
+	}
+}
+
+void Net1_Client::decreaseGridSize() {
+	if (gridSize > 1) {
+		gridSize--;
+		////Send a maze parameter
+		gridSizePacket p;
+		p.size = gridSize;
+		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
+		enet_peer_send(serverConnection, 0, gridSize);
+		this->RemoveGameObject(render);
+	}
+}
+
+
 void Net1_Client::OnInitializeScene()
 {
 	//Initialize Client Network
@@ -189,6 +214,9 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", network.m_OutgoingKb);
 
+	NCLDebug::AddStatusEntry(status_color, "Press 2 to decrease maze size, 1 to increase maze size, r to make new maze.");
+	NCLDebug::AddStatusEntry(status_color, "    Maze grid size: %i", gridSize);
+
 	
 }
 
@@ -253,6 +281,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 					}
 				}
 
+				
 			render = new MazeRenderer(generator);
 			const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
 			Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));

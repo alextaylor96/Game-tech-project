@@ -175,6 +175,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScreenPicker.h" />
     <ClInclude Include="SearchAlgorithm.h" />
+    <ClInclude Include="SearchAStar.h" />
     <ClInclude Include="SphereCollisionShape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

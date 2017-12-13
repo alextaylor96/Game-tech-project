@@ -43,6 +43,7 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <string>
 #include "../ncltech/MazeGenerator.h"
 #include "../ncltech/MazeRenderer.h"
+#include "../ncltech/SearchAStar.h"
 
 //Needed to get computer adapter IPv4 addresses via windows
 #include <iphlpapi.h>
@@ -61,11 +62,12 @@ int mazeSize = 10;
 
 MazeGenerator*	generator = new MazeGenerator();
 Mesh* wallmesh;
+SearchAStar* search_as = new SearchAStar();
 
 
 void Win32_PrintAllAdapterIPAddresses();
 
-enum packetType { mazePack, mazeSizePack, helloPack , densityPack
+enum packetType { mazePack, mazeSizePack, helloPack , densityPack, sePack, pathPack
 };
 
 struct mazePacket {
@@ -84,6 +86,20 @@ struct gridSizePacket {
 struct mazeDensityPacket {
 	packetType t = densityPack;
 	float density;
+};
+
+
+struct startendPacket {
+	packetType t = sePack;
+	uint startId;
+	uint endId;
+};
+
+
+struct pathPacket {
+	packetType t = pathPack;
+	uint pathLength;
+	uint nodes[1024];
 };
 
 int onExit(int exitcode)
@@ -110,6 +126,7 @@ int main(int arcg, char** argv)
 
 	printf("Server Initiated\n");
 
+	search_as->SetWeightings(1.0f, 1.0f);
 
 	Win32_PrintAllAdapterIPAddresses();
 
@@ -193,6 +210,32 @@ int main(int arcg, char** argv)
 					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);
 
+				}
+				//calculate the route from start and end recived from client and send best route packet back
+				if (evnt.packet->dataLength == sizeof(startendPacket) && evnt.packet->data[0] == sePack) {
+					startendPacket se;
+					memcpy(&se, evnt.packet->data, sizeof(startendPacket));
+					generator->setEndNode(se.endId);
+					generator->setStartNode(se.startId);
+					GraphNode* start = generator->GetStartNode();
+					GraphNode* end = generator->GetGoalNode();
+					search_as->FindBestPath(start, end);
+					//populate a path packet with the best path
+					pathPacket pathP;
+					pathP.pathLength = search_as->GetFinalPath().size();
+					int k = 0;
+					for (auto const& it : search_as->GetFinalPath()) {
+						for (int j = 0; j < (int)(generator->size*generator->size); ++j) {
+							if (generator->allNodes[j]._pos ==  it->_pos) {
+								pathP.nodes[k] = j;
+								++k;
+							}
+						}
+      				}
+					//send path packet to client
+					ENetPacket* pathInfoPacket = enet_packet_create(&pathP, sizeof(pathP), 0);
+					enet_host_broadcast(server.m_pNetwork, 0, pathInfoPacket);
+					
 				}
 				enet_packet_destroy(evnt.packet);
 				break;

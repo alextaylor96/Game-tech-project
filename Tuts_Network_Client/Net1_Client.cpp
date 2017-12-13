@@ -97,10 +97,14 @@ const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_co
 
 MazeGenerator*	generator = new MazeGenerator();
 MazeRenderer* render;
+vector<GraphNode*> pathNodes;
+bool pathMade = false;
+SearchHistory finalpath;
 
 vector<bool> mazeInfoClient;
 
-enum packetType{ mazePack, mazeSizePack, helloPack , densityPack};
+enum packetType{ mazePack, mazeSizePack, helloPack , densityPack ,sePack, pathPack
+};
 
 struct mazePacket {
 	packetType t = mazePack;
@@ -118,6 +122,19 @@ struct gridSizePacket {
 struct mazeDensityPacket {
 	packetType t = densityPack;
 	float density;
+};
+
+struct startendPacket {
+	packetType t = sePack;
+	uint startId;
+	uint endId;
+};
+
+
+struct pathPacket {
+	packetType t = pathPack;
+	uint pathLength;
+	uint nodes[1024];
 };
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
@@ -194,6 +211,8 @@ void Net1_Client::OnInitializeScene()
 		false,
 		Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 	this->AddGameObject(box);
+
+	pathMade = false;
 }
 
 void Net1_Client::OnCleanupScene()
@@ -244,6 +263,11 @@ void Net1_Client::OnUpdateScene(float dt)
 
 	NCLDebug::AddStatusEntry(status_color, "Press 0 to decrease maze size, 9 to increase maze size");
 	NCLDebug::AddStatusEntry(status_color, "    Maze density: %0.2f", density);
+
+	if (pathMade) {
+		render->DrawSearchHistory(finalpath, 2.5f / float(gridSize));
+	}
+	
 }
 
 void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
@@ -272,7 +296,6 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				d.density = density;
 				ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
 				enet_peer_send(serverConnection, 0, densityP);
-
 			
 			}
 		}
@@ -296,12 +319,12 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 
 				memcpy(&m, evnt.packet->data, sizeof(mazePacket));
 
-			
-			    cout << "maze info packet recieved. \n";
+
+				cout << "maze info packet recieved. \n";
 				//render maze here
 				int size = (uint)m.size;
 				uint base_offset = size * (size - 1);
-			
+
 				generator->Generate(size, 0.0f);
 				generator->setStartNode(m.startId);
 				generator->setEndNode(m.endId);
@@ -310,18 +333,44 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 					if (m.allEdges[i] == (uint)1) {
 						generator->allEdges[i]._iswall = true;
 					}
-					else if(m.allEdges[i] == (uint)0) {
+					else if (m.allEdges[i] == (uint)0) {
 						generator->allEdges[i]._iswall = false;
 					}
 				}
 
+
+				render = new MazeRenderer(generator);
+
+				const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
+				Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
+				render->Render()->SetTransform(Matrix4::Translation(pos_maze3) * maze_scalar);
+				this->AddGameObject(render);
+
+				//send start/end nodes
+				startendPacket se;
+				se.endId = m.endId;
+				se.startId = m.startId;
+				ENetPacket* seP = enet_packet_create(&se, sizeof(se), 0);
+				enet_peer_send(serverConnection, 0, seP);
+
+			}
+			else if (evnt.packet->dataLength == sizeof(pathPacket))
+			{
+				pathPacket p;
+				pathNodes.clear();
+				finalpath.clear();
+				memcpy(&p, evnt.packet->data, sizeof(pathPacket));
 				
-			render = new MazeRenderer(generator);
-			
-			const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
-			Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
-			render->Render()->SetTransform(Matrix4::Translation(pos_maze3) * maze_scalar);
-			this->AddGameObject(render);
+				
+				for (int i = 0; (uint)i <= p.pathLength; ++i) {
+					pathNodes.push_back(&generator->allNodes[p.nodes[i]]);
+				}
+				
+				for (int i = 0; (uint)i <= p.pathLength - 2; ++i) {
+					finalpath.push_back({ pathNodes.at(i),  pathNodes.at(i + 1) });
+				}
+				pathMade = true;
+
 			}
 			else
 			{

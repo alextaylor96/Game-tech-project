@@ -67,7 +67,7 @@ SearchAStar* search_as = new SearchAStar();
 
 void Win32_PrintAllAdapterIPAddresses();
 
-enum packetType { mazePack, mazeSizePack, helloPack , densityPack, sePack, pathPack
+enum packetType { mazePack, mazeSizePack, helloPack , densityPack, sePack, pathPack, avaPack
 };
 
 struct mazePacket {
@@ -102,6 +102,11 @@ struct pathPacket {
 	uint nodes[1024];
 };
 
+struct avatarPacket {
+	packetType t = avaPack;
+	Vector3 pos;
+};
+
 int onExit(int exitcode)
 {
 	server.Release();
@@ -131,12 +136,25 @@ int main(int arcg, char** argv)
 	Win32_PrintAllAdapterIPAddresses();
 
 	timer.GetTimedMS();
+	int stall = 0;
+
+	bool avaMade = false;
+	Vector3 avaPos;
+	int currentNode;
+	int nextNode;
+
 	while (true)
 	{
 		float dt = timer.GetTimedMS() * 0.001f;
 		accum_time += dt;
 		rotation += 0.5f * PI * dt;
-
+		stall++;
+		if (stall > 1000000) {
+			std::cout << "    Incoming: " << server.m_IncomingKb << "kbps. \n";
+			std::cout << "    Outgoing: " << server.m_OutgoingKb << "kbps. \n";
+			stall = 0;
+		}
+		
 		//Handle All Incoming Packets and Send any enqued packets
 		server.ServiceNetwork(dt, [&](const ENetEvent& evnt)
 		{
@@ -243,7 +261,21 @@ int main(int arcg, char** argv)
 					ENetPacket* pathInfoPacket = enet_packet_create(&pathP, sizeof(pathP), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, pathInfoPacket);
 				
+					avaPos = search_as->GetFinalPath().front()->_pos;
+
 					cout << "path sent to clients.(server) \n";
+				}
+				//if avatar packet create avatar at start of current path
+				if (evnt.packet->dataLength == sizeof(avatarPacket) && evnt.packet->data[0] == avaPack) {
+					avatarPacket aP;
+					memcpy(&aP, evnt.packet->data, sizeof(avatarPacket));
+
+					aP.pos =  search_as->GetFinalPath().front()->_pos;
+					avaPos = aP.pos;
+					currentNode = 0;
+					nextNode = 1;
+					avaMade = true;
+
 				}
 				enet_packet_destroy(evnt.packet);
 				break;
@@ -272,6 +304,14 @@ int main(int arcg, char** argv)
 			//Create the packet and broadcast it (unreliable transport) to all clients
 			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
 			enet_host_broadcast(server.m_pNetwork, 0, position_update);
+			
+			//calculate movement of the avatar and send position to client
+			if (avaMade) {
+				avatarPacket aP;
+				aP.pos = avaPos;
+				ENetPacket* avaUpdate = enet_packet_create(&aP, sizeof(avatarPacket), 0);
+				enet_host_broadcast(server.m_pNetwork, 0, avaUpdate);
+			}
 
 		}
 

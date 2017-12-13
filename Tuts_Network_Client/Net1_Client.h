@@ -21,6 +21,8 @@ public:
 
 	void decreaseDensity();
 
+	void createAvatar();
+
 	virtual void OnInitializeScene() override;
 	void toggleShowPath();
 	virtual void OnCleanupScene() override;

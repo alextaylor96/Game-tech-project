@@ -117,6 +117,9 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
 		SceneManager::Instance()->GetCurrentScene()->generateNewMaze();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_O))
+		SceneManager::Instance()->GetCurrentScene()->createAvatar();
 }
 
 

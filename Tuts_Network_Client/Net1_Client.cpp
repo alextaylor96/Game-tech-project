@@ -107,7 +107,7 @@ SearchHistory finalpath;
 
 vector<bool> mazeInfoClient;
 
-enum packetType{ mazePack, mazeSizePack, helloPack , densityPack ,sePack, pathPack
+enum packetType{ mazePack, mazeSizePack, helloPack , densityPack ,sePack, pathPack, avaPack
 };
 
 struct mazePacket {
@@ -140,6 +140,13 @@ struct pathPacket {
 	uint pathLength;
 	uint nodes[1024];
 };
+
+
+struct avatarPacket{
+	packetType t = avaPack;
+	Vector3 pos;
+};
+
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
 	: Scene(friendly_name)
@@ -208,8 +215,28 @@ void Net1_Client::decreaseDensity() {
 	}
 }
 
+void Net1_Client::createAvatar() {
+	//create an avatar packet to send to server to let it know to create avatar
+	struct avatarPacket {
+		packetType t = avaPack;
+		Vector3 pos;
+	};
+
+	avatarPacket aP;
+
+	aP.pos = Vector3(0,0,0);
+
+	ENetPacket* aPack = enet_packet_create(&aP, sizeof(aP), 0);
+	enet_peer_send(serverConnection, 0, aPack);
+	this->AddGameObject(box);
+}
+
 void Net1_Client::OnInitializeScene()
 {
+	GraphicsPipeline::Instance()->GetCamera()->SetPosition(Vector3(10, 25, 14));
+	GraphicsPipeline::Instance()->GetCamera()->SetPitch(-80);
+	GraphicsPipeline::Instance()->GetCamera()->SetYaw(0);
+
 	//Initialize Client Network
 	if (network.Initialize(0))
 	{
@@ -219,19 +246,27 @@ void Net1_Client::OnInitializeScene()
 		serverConnection = network.ConnectPeer(127, 0, 0, 1, 1234);
 		NCLDebug::Log("Network: Attempting to connect to server.");
 	}
-
+	//There is always too much ground to cover...
+	this->AddGameObject(CommonUtils::BuildCuboidObject(
+		"Ground",
+		Vector3(0.0f, -1.5f, 0.0f),
+		Vector3(20.0f, 1.0f, 20.0f),
+		false,
+		0.0f,
+		false,
+		false,
+		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 	//Generate Simple Scene with a box that can be updated upon recieving server packets
 	box = CommonUtils::BuildCuboidObject(
-		"Server",
+		"Avatar",
 		Vector3(0.0f, 1.0f, 0.0f),
-		Vector3(0.5f, 0.5f, 0.5f),
+		Vector3(0.05f, 3.05f, 0.05f),
 		true,									//Physics Enabled here Purely to make setting position easier via Physics()->SetPosition()
 		0.0f,
 		false,
 		false,
-		Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-	this->AddGameObject(box);
-
+		Vector4(1.f, 0.f, 1.f, 1.0f));
+	
 	pathMade = false;
 }
 
@@ -273,14 +308,11 @@ void Net1_Client::OnUpdateScene(float dt)
 	uint8_t ip2 = (serverConnection->address.host >> 8) & 0xFF;
 	uint8_t ip3 = (serverConnection->address.host >> 16) & 0xFF;
 	uint8_t ip4 = (serverConnection->address.host >> 24) & 0xFF;
-
-	NCLDebug::DrawTextWs(box->Physics()->GetPosition() + Vector3(0.f, 0.6f, 0.f), STATUS_TEXT_SIZE, TEXTALIGN_CENTRE, Vector4(0.f, 0.f, 0.f, 1.f),
-		"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, serverConnection->address.port);
-
 	
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", network.m_OutgoingKb);
+	NCLDebug::AddStatusEntry(status_color, "Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, serverConnection->address.port);
 	NCLDebug::AddStatusEntry(status_color, "G to create a new maze.");
 	NCLDebug::AddStatusEntry(status_color, "Press 2 to decrease maze size, 1 to increase maze size");
 	NCLDebug::AddStatusEntry(status_color, "    Maze grid size: %i", gridSize);
@@ -289,6 +321,8 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "    Maze density: %0.2f", density);
 
 	NCLDebug::AddStatusEntry(status_color, "I to toggle showing path.");
+
+	NCLDebug::AddStatusEntry(status_color, "O to spawn avatar.");
 	
 	if (pathMade && showPath) {
 		render->DrawSearchHistory(finalpath, 2.5f / float(gridSize));
@@ -335,9 +369,9 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 			if (evnt.packet->dataLength == sizeof(Vector3))
 			{
 			//	cout << "position recieved from server. \n";
-				Vector3 pos;
+			/*	Vector3 pos;
 				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
-				box->Physics()->SetPosition(pos);
+				box->Physics()->SetPosition(pos);*/
 			}
 			else if (evnt.packet->dataLength == sizeof(mazePacket))
 			{
@@ -370,8 +404,8 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 
 				render = new MazeRenderer(generator);
 
-				const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
-				Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
+				const Vector3 pos_maze3 = Vector3(10.f, 0.f, 10.f);
+				Matrix4 maze_scalar = Matrix4::Scale(Vector3(15.f, 15.0f / float(m.size),15.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
 				render->Render()->SetTransform(Matrix4::Translation(pos_maze3) * maze_scalar);
 				this->AddGameObject(render);
 
@@ -403,6 +437,25 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				}
 				pathMade = true;
 
+			}
+			else if (evnt.packet->dataLength == sizeof(avatarPacket))
+			{
+				cout << "avatarPacket recived from server.(client)" << endl;
+				avatarPacket p;
+				memcpy(&p, evnt.packet->data, sizeof(avatarPacket));
+
+
+				float grid_scalar = 1.0f / (float)generator->size;
+
+				Matrix4 transform = render->Render()->GetWorldTransform();
+
+				Vector3 point = transform * Vector3(
+					(finalpath.begin()->first->_pos.x + 0.5f) * grid_scalar,
+					(finalpath.begin()->first->_pos.z + 0.5f) * grid_scalar * 3.05f,
+					(finalpath.begin()->first->_pos.y + 0.5f) * grid_scalar);
+
+				box->Physics()->SetPosition(point);
+		
 			}
 			else
 			{

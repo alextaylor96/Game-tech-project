@@ -114,6 +114,9 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_I))
 		SceneManager::Instance()->GetCurrentScene()->toggleShowPath();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
+		SceneManager::Instance()->GetCurrentScene()->generateNewMaze();
 }
 
 

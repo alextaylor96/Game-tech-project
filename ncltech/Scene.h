@@ -70,6 +70,7 @@ public:
 	virtual void increaseDensity() {}
 	virtual void decreaseDensity() {}
 	virtual void toggleShowPath() {}
+	virtual void generateNewMaze() {}
 	// Called when scene is being activated, and will begin being rendered/updated. 
 	//	 - Initialize objects/physics here
 	virtual void OnInitializeScene()	{}		

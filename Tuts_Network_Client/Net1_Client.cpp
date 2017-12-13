@@ -148,6 +148,15 @@ Net1_Client::Net1_Client(const std::string& friendly_name)
 {
 }
 
+void Net1_Client::generateNewMaze() {
+		////Send a maze parameter
+		gridSizePacket p;
+		p.size = gridSize;
+		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
+		enet_peer_send(serverConnection, 0, gridSize);
+		cout << "grid size sent to server.(client) \n";
+}
+
 void Net1_Client::increaseGridSize() {
 	if (gridSize < 20) {
 		gridSize++;
@@ -272,8 +281,8 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", network.m_OutgoingKb);
-
-	NCLDebug::AddStatusEntry(status_color, "Press 2 to decrease maze size, 1 to increase maze size, r to make new maze.");
+	NCLDebug::AddStatusEntry(status_color, "G to create a new maze.");
+	NCLDebug::AddStatusEntry(status_color, "Press 2 to decrease maze size, 1 to increase maze size");
 	NCLDebug::AddStatusEntry(status_color, "    Maze grid size: %i", gridSize);
 
 	NCLDebug::AddStatusEntry(status_color, "Press 0 to decrease maze size, 9 to increase maze size");
@@ -353,6 +362,8 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 					}
 					else if (m.allEdges[i] == (uint)0) {
 						generator->allEdges[i]._iswall = false;
+
+					
 					}
 				}
 

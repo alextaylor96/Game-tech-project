@@ -11,6 +11,8 @@ class Net1_Client : public Scene
 public:
 	Net1_Client(const std::string& friendly_name);
 
+	void generateNewMaze();
+
 	void increaseGridSize();
 
 	void decreaseGridSize();

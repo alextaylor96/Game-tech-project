@@ -67,7 +67,8 @@ public:
 
 	virtual void increaseGridSize() {}
 	virtual void decreaseGridSize() {}
-
+	virtual void increaseDensity() {}
+	virtual void decreaseDensity() {}
 
 	// Called when scene is being activated, and will begin being rendered/updated. 
 	//	 - Initialize objects/physics here

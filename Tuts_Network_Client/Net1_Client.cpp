@@ -89,6 +89,7 @@ produce satisfactory results on the networked peers.
 #include <ncltech\MazeRenderer.h>
 
 uint gridSize = 10;
+float density = 0.5;
 
 const Vector3 status_color3 = Vector3(1.0f, 0.6f, 0.6f);
 const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_color3.z, 1.0f);
@@ -99,7 +100,7 @@ MazeRenderer* render;
 
 vector<bool> mazeInfoClient;
 
-enum packetType{ mazePack, mazeSizePack, helloPack };
+enum packetType{ mazePack, mazeSizePack, helloPack , densityPack};
 
 struct mazePacket {
 	packetType t = mazePack;
@@ -112,6 +113,11 @@ struct mazePacket {
 struct gridSizePacket {
 	packetType t = mazeSizePack;
 	uint size;
+};
+
+struct mazeDensityPacket {
+	packetType t = densityPack;
+	float density;
 };
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
@@ -129,7 +135,6 @@ void Net1_Client::increaseGridSize() {
 		p.size = gridSize;
 		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
 		enet_peer_send(serverConnection, 0, gridSize);
-		this->RemoveGameObject(render);
 	}
 }
 
@@ -141,10 +146,30 @@ void Net1_Client::decreaseGridSize() {
 		p.size = gridSize;
 		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
 		enet_peer_send(serverConnection, 0, gridSize);
-		this->RemoveGameObject(render);
 	}
 }
 
+void Net1_Client::increaseDensity() {
+	if (density < 1) {
+		density += 0.1f;
+		////Send a maze parameter
+		mazeDensityPacket d;
+		d.density = density;
+		ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
+		enet_peer_send(serverConnection, 0, densityP);
+	}
+}
+
+void Net1_Client::decreaseDensity() {
+	if (density >= 0.1) {
+		density -= 0.1f;
+		////Send a maze parameter
+		mazeDensityPacket d;
+		d.density = density;
+		ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
+		enet_peer_send(serverConnection, 0, densityP);
+	}
+}
 
 void Net1_Client::OnInitializeScene()
 {
@@ -217,7 +242,8 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "Press 2 to decrease maze size, 1 to increase maze size, r to make new maze.");
 	NCLDebug::AddStatusEntry(status_color, "    Maze grid size: %i", gridSize);
 
-	
+	NCLDebug::AddStatusEntry(status_color, "Press 0 to decrease maze size, 9 to increase maze size");
+	NCLDebug::AddStatusEntry(status_color, "    Maze density: %0.2f", density);
 }
 
 void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
@@ -241,6 +267,12 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				p.size = gridSize;
 				ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
 				enet_peer_send(serverConnection, 0, gridSize);
+
+				mazeDensityPacket d;
+				d.density = density;
+				ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
+				enet_peer_send(serverConnection, 0, densityP);
+
 			
 			}
 		}
@@ -250,6 +282,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 	//Server has sent us a new packet
 	case ENET_EVENT_TYPE_RECEIVE:
 		{
+		  
 			if (evnt.packet->dataLength == sizeof(Vector3))
 			{
 				Vector3 pos;
@@ -258,6 +291,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 			}
 			else if (evnt.packet->dataLength == sizeof(mazePacket))
 			{
+				this->RemoveGameObject(render);
 				mazePacket m;
 
 				memcpy(&m, evnt.packet->data, sizeof(mazePacket));
@@ -283,6 +317,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 
 				
 			render = new MazeRenderer(generator);
+			
 			const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
 			Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
 			render->Render()->SetTransform(Matrix4::Translation(pos_maze3) * maze_scalar);

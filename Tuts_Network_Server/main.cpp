@@ -56,6 +56,8 @@ NetworkBase server;
 GameTimer timer;
 float accum_time = 0.0f;
 float rotation = 0.0f;
+float mazeDensity = 0.5f;
+int mazeSize = 10;
 
 MazeGenerator*	generator = new MazeGenerator();
 Mesh* wallmesh;
@@ -63,7 +65,8 @@ Mesh* wallmesh;
 
 void Win32_PrintAllAdapterIPAddresses();
 
-enum packetType { mazePack, mazeSizePack, helloPack };
+enum packetType { mazePack, mazeSizePack, helloPack , densityPack
+};
 
 struct mazePacket {
 	packetType t = mazePack;
@@ -76,6 +79,11 @@ struct mazePacket {
 struct gridSizePacket {
 	packetType t = mazeSizePack;
 	uint size;
+};
+
+struct mazeDensityPacket {
+	packetType t = densityPack;
+	float density;
 };
 
 int onExit(int exitcode)
@@ -129,12 +137,12 @@ int main(int arcg, char** argv)
 				}
 				if (evnt.packet->dataLength == sizeof(gridSizePacket) && evnt.packet->data[0] == mazeSizePack) {
 					//update if integer
-					int mazeSize;
+					
 				    memcpy(&mazeSize, evnt.packet->data + sizeof(packetType), sizeof(uint));
 					printf("Int to use recived as: %i\n", mazeSize);
 
 					//generate the maze
-					generator->Generate(mazeSize, 0.5f);
+					generator->Generate(mazeSize, mazeDensity);
 					MazeRenderer* mazeRenderer = new MazeRenderer(generator, wallmesh);
 					//send maze to client
 					mazePacket mazeInfo;
@@ -152,6 +160,35 @@ int main(int arcg, char** argv)
 						}	
 					}
 				
+					//create and send packet ot client
+					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
+					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);
+
+				}
+				if (evnt.packet->dataLength == sizeof(mazeDensityPacket) && evnt.packet->data[0] == densityPack) {
+					//update if integer
+					memcpy(&mazeDensity, evnt.packet->data + sizeof(packetType), sizeof(float));
+					printf("Int to use recived as: %0.2f\n", mazeDensity);
+
+					//generate the maze
+					generator->Generate(mazeSize, mazeDensity);
+					MazeRenderer* mazeRenderer = new MazeRenderer(generator, wallmesh);
+					//send maze to client
+					mazePacket mazeInfo;
+					mazeInfo.size = generator->GetSize();
+					mazeInfo.startId = generator->idxS;
+					mazeInfo.endId = generator->idxE;
+
+					for (int i = 0;(uint)i < generator->base_offset * 2;++i) {
+						GraphEdge* tempEdge = &generator->allEdges[i];
+						if (tempEdge->_iswall) {
+							mazeInfo.allEdges[i] = 1;
+						}
+						else {
+							mazeInfo.allEdges[i] = 0;
+						}
+					}
+
 					//create and send packet ot client
 					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);

@@ -104,6 +104,12 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_2))
 		SceneManager::Instance()->GetCurrentScene()->decreaseGridSize();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_9))
+		SceneManager::Instance()->GetCurrentScene()->increaseDensity();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_0))
+		SceneManager::Instance()->GetCurrentScene()->decreaseDensity();
 }
 
 

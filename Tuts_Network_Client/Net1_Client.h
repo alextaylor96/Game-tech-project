@@ -15,6 +15,10 @@ public:
 
 	void decreaseGridSize();
 
+	void increaseDensity();
+
+	void decreaseDensity();
+
 	virtual void OnInitializeScene() override;
 	virtual void OnCleanupScene() override;
 	virtual void OnUpdateScene(float dt) override;

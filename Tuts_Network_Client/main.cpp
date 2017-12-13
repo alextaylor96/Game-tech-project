@@ -110,6 +110,10 @@ void HandleKeyboardInputs()
 
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_0))
 		SceneManager::Instance()->GetCurrentScene()->decreaseDensity();
+
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_I))
+		SceneManager::Instance()->GetCurrentScene()->toggleShowPath();
 }
 
 

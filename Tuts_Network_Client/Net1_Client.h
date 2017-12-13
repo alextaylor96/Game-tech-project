@@ -20,6 +20,7 @@ public:
 	void decreaseDensity();
 
 	virtual void OnInitializeScene() override;
+	void toggleShowPath();
 	virtual void OnCleanupScene() override;
 	virtual void OnUpdateScene(float dt) override;
 

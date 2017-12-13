@@ -156,7 +156,7 @@ int main(int arcg, char** argv)
 					//update if integer
 					
 				    memcpy(&mazeSize, evnt.packet->data + sizeof(packetType), sizeof(uint));
-					printf("Int to use recived as: %i\n", mazeSize);
+					cout << "grid size recived from clients.(server) \n";
 
 					//generate the maze
 					generator->Generate(mazeSize, mazeDensity);
@@ -180,13 +180,14 @@ int main(int arcg, char** argv)
 					//create and send packet ot client
 					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);
+					cout << "maze sent to clients.(server) \n";
 
 				}
 				if (evnt.packet->dataLength == sizeof(mazeDensityPacket) && evnt.packet->data[0] == densityPack) {
 					//update if integer
 					memcpy(&mazeDensity, evnt.packet->data + sizeof(packetType), sizeof(float));
-					printf("Int to use recived as: %0.2f\n", mazeDensity);
 
+					cout << "density recived from clients.(server) \n";
 					//generate the maze
 					generator->Generate(mazeSize, mazeDensity);
 					MazeRenderer* mazeRenderer = new MazeRenderer(generator, wallmesh);
@@ -210,6 +211,8 @@ int main(int arcg, char** argv)
 					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);
 
+					cout << "maze sent to clients.(server) \n";
+
 				}
 				//calculate the route from start and end recived from client and send best route packet back
 				if (evnt.packet->dataLength == sizeof(startendPacket) && evnt.packet->data[0] == sePack) {
@@ -219,6 +222,9 @@ int main(int arcg, char** argv)
 					generator->setStartNode(se.startId);
 					GraphNode* start = generator->GetStartNode();
 					GraphNode* end = generator->GetGoalNode();
+
+					cout << "start and end nodes recived from clients.(server) \n";
+
 					search_as->FindBestPath(start, end);
 					//populate a path packet with the best path
 					pathPacket pathP;
@@ -233,9 +239,11 @@ int main(int arcg, char** argv)
 						}
       				}
 					//send path packet to client
+					
 					ENetPacket* pathInfoPacket = enet_packet_create(&pathP, sizeof(pathP), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, pathInfoPacket);
-					
+				
+					cout << "path sent to clients.(server) \n";
 				}
 				enet_packet_destroy(evnt.packet);
 				break;

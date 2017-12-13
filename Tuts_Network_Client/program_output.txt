@@ -1,253 +1,85 @@
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexBasic.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragSuperSample.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexShadow.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/Common/EmptyFragment.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechGeomShadow.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexFull.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragForwardRender.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointVertex.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointFragment.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointGeometry.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Vertex.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/LineGeometry.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/VertexColOnly.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextVertex.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextFragment.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextGeometry.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Shader:
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexPicker.glsl
-[18:20:22]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragScreenPicker_nsightfix.glsl
-[18:20:22]     -> Linking Shader: Success!
-[18:20:22] 
-[18:20:22] Loading Mesh: ../../Data/Meshes/cube.obj
-[18:20:22] 
-[18:20:22] Loading Mesh: ../../Data/Meshes/sphere.obj
-[18:20:22] 
-[18:20:22] [SceneManager] - Enqueued scene: "Network #1 - Example Client"
-[18:20:22] 
-[18:20:22] Network: Initialized!
-[18:20:22] Network: Attempting to connect to server.
-[18:20:22] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:22] Network: Successfully connected to server!
-[18:20:24] [SceneManager] - Exiting scene -
-[18:20:24] 
-[18:20:24] Network: Initialized!
-[18:20:24] Network: Attempting to connect to server.
-[18:20:24] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:24] Network: Successfully connected to server!
-[18:20:24] [SceneManager] - Exiting scene -
-[18:20:24] 
-[18:20:24] Network: Initialized!
-[18:20:24] Network: Attempting to connect to server.
-[18:20:24] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:24] Network: Successfully connected to server!
-[18:20:25] [SceneManager] - Exiting scene -
-[18:20:25] 
-[18:20:25] Network: Initialized!
-[18:20:25] Network: Attempting to connect to server.
-[18:20:25] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:25] Network: Successfully connected to server!
-[18:20:25] [SceneManager] - Exiting scene -
-[18:20:25] 
-[18:20:25] Network: Initialized!
-[18:20:25] Network: Attempting to connect to server.
-[18:20:25] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:25] Network: Successfully connected to server!
-[18:20:25] [SceneManager] - Exiting scene -
-[18:20:25] 
-[18:20:25] Network: Initialized!
-[18:20:25] Network: Attempting to connect to server.
-[18:20:25] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:25] Network: Successfully connected to server!
-[18:20:25] [SceneManager] - Exiting scene -
-[18:20:25] 
-[18:20:25] Network: Initialized!
-[18:20:25] Network: Attempting to connect to server.
-[18:20:25] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:25] Network: Successfully connected to server!
-[18:20:25] [SceneManager] - Exiting scene -
-[18:20:25] 
-[18:20:25] Network: Initialized!
-[18:20:25] Network: Attempting to connect to server.
-[18:20:25] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:25] Network: Successfully connected to server!
-[18:20:26] [SceneManager] - Exiting scene -
-[18:20:26] 
-[18:20:26] Network: Initialized!
-[18:20:26] Network: Attempting to connect to server.
-[18:20:26] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:26] Network: Successfully connected to server!
-[18:20:26] [SceneManager] - Exiting scene -
-[18:20:26] 
-[18:20:26] Network: Initialized!
-[18:20:26] Network: Attempting to connect to server.
-[18:20:26] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:26] Network: Successfully connected to server!
-[18:20:26] [SceneManager] - Exiting scene -
-[18:20:26] 
-[18:20:26] Network: Initialized!
-[18:20:26] Network: Attempting to connect to server.
-[18:20:26] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:26] Network: Successfully connected to server!
-[18:20:26] [SceneManager] - Exiting scene -
-[18:20:26] 
-[18:20:26] Network: Initialized!
-[18:20:26] Network: Attempting to connect to server.
-[18:20:26] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:26] Network: Successfully connected to server!
-[18:20:26] [SceneManager] - Exiting scene -
-[18:20:26] 
-[18:20:26] Network: Initialized!
-[18:20:26] Network: Attempting to connect to server.
-[18:20:26] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:26] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:27] [SceneManager] - Exiting scene -
-[18:20:27] 
-[18:20:27] Network: Initialized!
-[18:20:27] Network: Attempting to connect to server.
-[18:20:27] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:27] Network: Successfully connected to server!
-[18:20:28] [SceneManager] - Exiting scene -
-[18:20:28] 
-[18:20:28] Network: Initialized!
-[18:20:28] Network: Attempting to connect to server.
-[18:20:28] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:28] Network: Successfully connected to server!
-[18:20:28] [SceneManager] - Exiting scene -
-[18:20:28] 
-[18:20:28] Network: Initialized!
-[18:20:28] Network: Attempting to connect to server.
-[18:20:28] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:28] Network: Successfully connected to server!
-[18:20:28] [SceneManager] - Exiting scene -
-[18:20:28] 
-[18:20:28] Network: Initialized!
-[18:20:28] Network: Attempting to connect to server.
-[18:20:28] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:28] Network: Successfully connected to server!
-[18:20:28] [SceneManager] - Exiting scene -
-[18:20:28] 
-[18:20:28] Network: Initialized!
-[18:20:28] Network: Attempting to connect to server.
-[18:20:28] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:28] Network: Successfully connected to server!
-[18:20:28] [SceneManager] - Exiting scene -
-[18:20:28] 
-[18:20:28] Network: Initialized!
-[18:20:28] Network: Attempting to connect to server.
-[18:20:28] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:28] Network: Successfully connected to server!
-[18:20:29] [SceneManager] - Exiting scene -
-[18:20:29] 
-[18:20:29] Network: Initialized!
-[18:20:29] Network: Attempting to connect to server.
-[18:20:29] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:29] Network: Successfully connected to server!
-[18:20:29] [SceneManager] - Exiting scene -
-[18:20:29] 
-[18:20:29] Network: Initialized!
-[18:20:29] Network: Attempting to connect to server.
-[18:20:29] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:29] Network: Successfully connected to server!
-[18:20:29] [SceneManager] - Exiting scene -
-[18:20:29] 
-[18:20:29] Network: Initialized!
-[18:20:29] Network: Attempting to connect to server.
-[18:20:29] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:29] Network: Successfully connected to server!
-[18:20:29] [SceneManager] - Exiting scene -
-[18:20:29] 
-[18:20:29] Network: Initialized!
-[18:20:29] Network: Attempting to connect to server.
-[18:20:29] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:29] Network: Successfully connected to server!
-[18:20:29] [SceneManager] - Exiting scene -
-[18:20:29] 
-[18:20:29] Network: Initialized!
-[18:20:29] Network: Attempting to connect to server.
-[18:20:29] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:29] Network: Successfully connected to server!
-[18:20:30] [SceneManager] - Exiting scene -
-[18:20:30] 
-[18:20:30] Network: Initialized!
-[18:20:30] Network: Attempting to connect to server.
-[18:20:30] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:30] Network: Successfully connected to server!
-[18:20:30] [SceneManager] - Exiting scene -
-[18:20:30] 
-[18:20:30] Network: Initialized!
-[18:20:30] Network: Attempting to connect to server.
-[18:20:30] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:30] Network: Successfully connected to server!
-[18:20:30] [SceneManager] - Exiting scene -
-[18:20:30] 
-[18:20:30] Network: Initialized!
-[18:20:30] Network: Attempting to connect to server.
-[18:20:30] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:30] Network: Successfully connected to server!
-[18:20:30] [SceneManager] - Exiting scene -
-[18:20:30] 
-[18:20:30] Network: Initialized!
-[18:20:30] Network: Attempting to connect to server.
-[18:20:30] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:30] Network: Successfully connected to server!
-[18:20:30] [SceneManager] - Exiting scene -
-[18:20:30] 
-[18:20:30] Network: Initialized!
-[18:20:30] Network: Attempting to connect to server.
-[18:20:30] [SceneManager] - Scene switched to: "Network #1 - Example Client"
-[18:20:30] Network: Successfully connected to server!
-[18:20:32] [SceneManager] Closing scene manager
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexBasic.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragSuperSample.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexShadow.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/Common/EmptyFragment.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechGeomShadow.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexFull.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragForwardRender.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointVertex.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointFragment.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointGeometry.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Vertex.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/LineGeometry.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/VertexColOnly.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextVertex.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextFragment.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextGeometry.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Shader:
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexPicker.glsl
+[18:47:54]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragScreenPicker_nsightfix.glsl
+[18:47:54]     -> Linking Shader: Success!
+[18:47:54] 
+[18:47:54] Loading Mesh: ../../Data/Meshes/cube.obj
+[18:47:54] 
+[18:47:54] Loading Mesh: ../../Data/Meshes/sphere.obj
+[18:47:54] 
+[18:47:54] [SceneManager] - Enqueued scene: "Network #1 - Example Client"
+[18:47:54] 
+[18:47:54] Network: Initialized!
+[18:47:54] Network: Attempting to connect to server.
+[18:47:54] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:54] Network: Successfully connected to server!
+[18:47:59] [SceneManager] - Exiting scene -
+[18:47:59] 
+[18:47:59] Network: Initialized!
+[18:47:59] Network: Attempting to connect to server.
+[18:47:59] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:59] Network: Successfully connected to server!
+[18:47:59] [SceneManager] - Exiting scene -
+[18:47:59] 
+[18:47:59] Network: Initialized!
+[18:47:59] Network: Attempting to connect to server.
+[18:47:59] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:59] Network: Successfully connected to server!
+[18:47:59] [SceneManager] - Exiting scene -
+[18:47:59] 
+[18:47:59] Network: Initialized!
+[18:47:59] Network: Attempting to connect to server.
+[18:47:59] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:59] Network: Successfully connected to server!
+[18:47:59] [SceneManager] - Exiting scene -
+[18:47:59] 
+[18:47:59] Network: Initialized!
+[18:47:59] Network: Attempting to connect to server.
+[18:47:59] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:59] Network: Successfully connected to server!
+[18:47:59] [SceneManager] - Exiting scene -
+[18:47:59] 
+[18:47:59] Network: Initialized!
+[18:47:59] Network: Attempting to connect to server.
+[18:47:59] [SceneManager] - Scene switched to: "Network #1 - Example Client"
+[18:47:59] Network: Successfully connected to server!
+[18:48:03] [SceneManager] Closing scene manager

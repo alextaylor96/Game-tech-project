@@ -69,7 +69,7 @@ public:
 	virtual void decreaseGridSize() {}
 	virtual void increaseDensity() {}
 	virtual void decreaseDensity() {}
-
+	virtual void toggleShowPath() {}
 	// Called when scene is being activated, and will begin being rendered/updated. 
 	//	 - Initialize objects/physics here
 	virtual void OnInitializeScene()	{}		

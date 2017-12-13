@@ -1,60 +1,59 @@
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexBasic.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragSuperSample.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexShadow.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/Common/EmptyFragment.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechGeomShadow.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexFull.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragForwardRender.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointVertex.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointFragment.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointGeometry.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Vertex.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/LineGeometry.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/VertexColOnly.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextVertex.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextFragment.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextGeometry.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:04] Loading Shader:
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexPicker.glsl
-[18:03:04]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragScreenPicker_nsightfix.glsl
-[18:03:04]     -> Linking Shader: Success!
-[18:03:04] 
-[18:03:05] Loading Mesh: ../../Data/Meshes/cube.obj
-[18:03:05] 
-[18:03:05] Loading Mesh: ../../Data/Meshes/sphere.obj
-[18:03:05] 
-[18:03:05] [SceneManager] - Enqueued scene: "GameLogic Example #1 - Path Following"
-[18:03:05] 
-[18:03:05] [SceneManager] - Scene switched to: "GameLogic Example #1 - Path Following"
-[18:03:05] [SceneManager] - Enqueued scene: "GameLogic Example #2 - Angle Computation"
-[18:03:05] Loading Mesh: ../../Data/Meshes/raptor.obj
-[18:03:05]     -> Loading Texture: ../../Data/Textures/raptor.jpg
-[18:03:05] 
-[18:03:05] [SceneManager] - Enqueued scene: "GameLogic Example #3 - Finite State Machine"
-[18:03:05] Loading Mesh: ../../Data/Meshes/cube.obj
-[18:03:05] 
-[18:03:05] [SceneManager] - Enqueued scene: "GameLogic Example #4 - Path Finding"
-[18:03:07] [SceneManager] Closing scene manager
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexBasic.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragSuperSample.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexShadow.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/Common/EmptyFragment.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechGeomShadow.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexFull.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragForwardRender.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointVertex.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointFragment.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/PointGeometry.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Vertex.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/LineGeometry.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/VertexColOnly.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/Fragment.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextVertex.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextFragment.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/DebugShaders/TextGeometry.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Shader:
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechVertexPicker.glsl
+[18:47:33]     -> Compiling Shader: ../../Data/Shaders/SceneRenderer/TechFragScreenPicker_nsightfix.glsl
+[18:47:33]     -> Linking Shader: Success!
+[18:47:33] 
+[18:47:33] Loading Mesh: ../../Data/Meshes/cube.obj
+[18:47:33] 
+[18:47:33] Loading Mesh: ../../Data/Meshes/sphere.obj
+[18:47:33] 
+[18:47:33] [SceneManager] - Enqueued scene: "GameLogic Example #1 - Path Following"
+[18:47:33] 
+[18:47:33] [SceneManager] - Scene switched to: "GameLogic Example #1 - Path Following"
+[18:47:33] [SceneManager] - Enqueued scene: "GameLogic Example #2 - Angle Computation"
+[18:47:33] Loading Mesh: ../../Data/Meshes/raptor.obj
+[18:47:34]     -> Loading Texture: ../../Data/Textures/raptor.jpg
+[18:47:34] 
+[18:47:34] [SceneManager] - Enqueued scene: "GameLogic Example #3 - Finite State Machine"
+[18:47:34] Loading Mesh: ../../Data/Meshes/cube.obj
+[18:47:34] 
+[18:47:34] [SceneManager] - Enqueued scene: "GameLogic Example #4 - Path Finding"

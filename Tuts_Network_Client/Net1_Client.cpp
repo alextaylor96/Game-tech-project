@@ -97,6 +97,10 @@ const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_co
 
 MazeGenerator*	generator = new MazeGenerator();
 MazeRenderer* render;
+
+vector<GraphNode*> navMeshNodes;
+
+bool showPath = false;
 vector<GraphNode*> pathNodes;
 bool pathMade = false;
 SearchHistory finalpath;
@@ -152,6 +156,7 @@ void Net1_Client::increaseGridSize() {
 		p.size = gridSize;
 		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
 		enet_peer_send(serverConnection, 0, gridSize);
+		cout << "grid size sent to server.(client) \n";
 	}
 }
 
@@ -163,6 +168,8 @@ void Net1_Client::decreaseGridSize() {
 		p.size = gridSize;
 		ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
 		enet_peer_send(serverConnection, 0, gridSize);
+
+		cout << "grid size sent to server.(client) \n";
 	}
 }
 
@@ -174,6 +181,8 @@ void Net1_Client::increaseDensity() {
 		d.density = density;
 		ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
 		enet_peer_send(serverConnection, 0, densityP);
+
+		cout << "density sent to server.(client) \n";
 	}
 }
 
@@ -185,6 +194,8 @@ void Net1_Client::decreaseDensity() {
 		d.density = density;
 		ENetPacket* densityP = enet_packet_create(&d, sizeof(d), 0);
 		enet_peer_send(serverConnection, 0, densityP);
+
+		cout << "density sent to server.(client) \n";
 	}
 }
 
@@ -213,6 +224,10 @@ void Net1_Client::OnInitializeScene()
 	this->AddGameObject(box);
 
 	pathMade = false;
+}
+
+void Net1_Client::toggleShowPath() {
+	showPath = !showPath;
 }
 
 void Net1_Client::OnCleanupScene()
@@ -264,7 +279,9 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "Press 0 to decrease maze size, 9 to increase maze size");
 	NCLDebug::AddStatusEntry(status_color, "    Maze density: %0.2f", density);
 
-	if (pathMade) {
+	NCLDebug::AddStatusEntry(status_color, "I to toggle showing path.");
+	
+	if (pathMade && showPath) {
 		render->DrawSearchHistory(finalpath, 2.5f / float(gridSize));
 	}
 	
@@ -308,6 +325,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 		  
 			if (evnt.packet->dataLength == sizeof(Vector3))
 			{
+			//	cout << "position recieved from server. \n";
 				Vector3 pos;
 				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
 				box->Physics()->SetPosition(pos);
@@ -320,7 +338,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				memcpy(&m, evnt.packet->data, sizeof(mazePacket));
 
 
-				cout << "maze info packet recieved. \n";
+				cout << "maze recieved from server.(client) \n";
 				//render maze here
 				int size = (uint)m.size;
 				uint base_offset = size * (size - 1);
@@ -353,9 +371,12 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				ENetPacket* seP = enet_packet_create(&se, sizeof(se), 0);
 				enet_peer_send(serverConnection, 0, seP);
 
+				cout << "start/end nodes sent to server.(client) \n";
+
 			}
 			else if (evnt.packet->dataLength == sizeof(pathPacket))
 			{
+				cout << "Path recived from server.(client)" << endl;
 				pathPacket p;
 				pathNodes.clear();
 				finalpath.clear();

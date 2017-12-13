@@ -41,6 +41,8 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <ncltech\NetworkBase.h>
 #include <iostream>
 #include <string>
+#include "../ncltech/MazeGenerator.h"
+#include "../ncltech/MazeRenderer.h"
 
 //Needed to get computer adapter IPv4 addresses via windows
 #include <iphlpapi.h>
@@ -55,8 +57,16 @@ GameTimer timer;
 float accum_time = 0.0f;
 float rotation = 0.0f;
 
+MazeGenerator*	generator = new MazeGenerator();
+Mesh* wallmesh;
+
 
 void Win32_PrintAllAdapterIPAddresses();
+
+struct mazePacket {
+	uint mazeSize;
+	uint mazeWalls [1024] ;
+};
 
 int onExit(int exitcode)
 {
@@ -113,8 +123,31 @@ int main(int arcg, char** argv)
 					for (int i = 2; i < (int)evnt.packet->dataLength; ++i) {
 						stringValue += (char)evnt.packet->data[i];
 					}
-					int intValue = stoi(stringValue);
-					printf("Int to use recived as: %i\n", intValue);
+					int mazeSize = stoi(stringValue);
+					printf("Int to use recived as: %i\n", mazeSize);
+
+					//generate the maze
+					generator->Generate(mazeSize, 0.5f);
+					MazeRenderer* mazeRenderer = new MazeRenderer(generator, wallmesh);
+					//send maze to client
+					mazePacket mazeInfo;
+					mazeInfo.mazeSize = mazeSize;
+					for (int i = 0; i < mazeSize * mazeSize; ++i) {
+						bool temp = mazeRenderer->getFlatMaze();
+						memcpy(&temp, mazeRenderer->getFlatMaze() + i * sizeof(bool), sizeof(bool));
+						if (temp) {
+							mazeInfo.mazeWalls[i] = 1;
+						}
+						else {
+							mazeInfo.mazeWalls[i] = 0;
+						}
+						
+					}
+
+					//create and send packet ot client
+					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
+					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);
+
 				}
 				enet_packet_destroy(evnt.packet);
 				break;
@@ -139,15 +172,11 @@ int main(int arcg, char** argv)
 				1.5f,
 				sin(rotation) * 2.0f);
 
-			int testInt = 10;
 
 			//Create the packet and broadcast it (unreliable transport) to all clients
 			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
 			enet_host_broadcast(server.m_pNetwork, 0, position_update);
 
-			//Create the packet and broadcast it (unreliable transport) to all clients
-			ENetPacket* int_update = enet_packet_create(&testInt, sizeof(int), 0);
-			enet_host_broadcast(server.m_pNetwork, 0, int_update);
 		}
 
 		Sleep(0);

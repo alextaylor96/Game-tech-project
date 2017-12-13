@@ -140,6 +140,8 @@
     <ClCompile Include="GraphicsPipeline.cpp" />
     <ClCompile Include="Hull.cpp" />
     <ClCompile Include="Manifold.cpp" />
+    <ClCompile Include="MazeGenerator.cpp" />
+    <ClCompile Include="MazeRender.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="GraphicsPipeline.h" />
     <ClInclude Include="Hull.h" />
     <ClInclude Include="Manifold.h" />
+    <ClInclude Include="MazeGenerator.h" />
+    <ClInclude Include="MazeRenderer.h" />
     <ClInclude Include="NetworkBase.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Octree.h" />
@@ -170,6 +174,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScreenPicker.h" />
+    <ClInclude Include="SearchAlgorithm.h" />
     <ClInclude Include="SphereCollisionShape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

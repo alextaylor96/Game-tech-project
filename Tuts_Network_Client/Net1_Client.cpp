@@ -86,10 +86,18 @@ produce satisfactory results on the networked peers.
 #include <nclgl\NCLDebug.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\CommonUtils.h>
+#include <ncltech\MazeRenderer.h>
 
 const Vector3 status_color3 = Vector3(1.0f, 0.6f, 0.6f);
 const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_color3.z, 1.0f);
-int testVal = 0;
+Mesh* wallmesh;
+
+vector<bool> mazeInfoClient;
+
+struct mazePacket {
+	uint mazeSize;
+	uint mazeWalls[1024];
+};
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
 	: Scene(friendly_name)
@@ -166,7 +174,7 @@ void Net1_Client::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", network.m_OutgoingKb);
 
-	NCLDebug::AddStatusEntry(status_color, "  Test int value: %i", testVal);
+	
 }
 
 void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
@@ -186,7 +194,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				enet_peer_send(serverConnection, 0, packet);
 			
 				////Send a maze parameter
-				char* gridSize = "i:15";
+				char* gridSize = "i:10";
 				ENetPacket* gridSizePacket = enet_packet_create(gridSize, strlen(gridSize) + 1, 0);
 				enet_peer_send(serverConnection, 0, gridSizePacket);
 			
@@ -204,9 +212,17 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
 				box->Physics()->SetPosition(pos);
 			}
-			else if (evnt.packet->dataLength == sizeof(int))
+			else if (evnt.packet->dataLength == sizeof(mazePacket))
 			{
-				memcpy(&testVal, evnt.packet->data, sizeof(int));
+				mazePacket m;
+				memcpy(&m.mazeSize, evnt.packet->data, sizeof(uint));
+				for (uint i = 0; i < m.mazeSize * m.mazeSize; ++i) {
+					memcpy(&m.mazeWalls[i], evnt.packet->data + (i+1) * sizeof(uint), sizeof(uint));
+				}
+				
+				cout << "maze info packet recieved. \n";
+				//create maze here
+				
 			}
 			else
 			{

@@ -88,15 +88,30 @@ produce satisfactory results on the networked peers.
 #include <ncltech\CommonUtils.h>
 #include <ncltech\MazeRenderer.h>
 
+uint gridSize = 10;
+
 const Vector3 status_color3 = Vector3(1.0f, 0.6f, 0.6f);
 const Vector4 status_color = Vector4(status_color3.x, status_color3.y, status_color3.z, 1.0f);
-Mesh* wallmesh;
+
+
+MazeGenerator*	generator = new MazeGenerator();
+MazeRenderer* render;
 
 vector<bool> mazeInfoClient;
 
+enum packetType{ mazePack, mazeSizePack, helloPack };
+
 struct mazePacket {
-	uint mazeSize;
-	uint mazeWalls[1024];
+	packetType t = mazePack;
+	uint size;
+	uint startId;
+	uint endId;
+	uint allEdges[1024];
+};
+
+struct gridSizePacket {
+	packetType t = mazeSizePack;
+	uint size;
 };
 
 Net1_Client::Net1_Client(const std::string& friendly_name)
@@ -194,9 +209,10 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 				enet_peer_send(serverConnection, 0, packet);
 			
 				////Send a maze parameter
-				char* gridSize = "i:10";
-				ENetPacket* gridSizePacket = enet_packet_create(gridSize, strlen(gridSize) + 1, 0);
-				enet_peer_send(serverConnection, 0, gridSizePacket);
+				gridSizePacket p;
+				p.size = gridSize;
+				ENetPacket* gridSize = enet_packet_create(&p, sizeof(p), 0);
+				enet_peer_send(serverConnection, 0, gridSize);
 			
 			}
 		}
@@ -215,14 +231,33 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent& evnt)
 			else if (evnt.packet->dataLength == sizeof(mazePacket))
 			{
 				mazePacket m;
-				memcpy(&m.mazeSize, evnt.packet->data, sizeof(uint));
-				for (uint i = 0; i < m.mazeSize * m.mazeSize; ++i) {
-					memcpy(&m.mazeWalls[i], evnt.packet->data + (i+1) * sizeof(uint), sizeof(uint));
+
+				memcpy(&m, evnt.packet->data, sizeof(mazePacket));
+
+			
+			    cout << "maze info packet recieved. \n";
+				//render maze here
+				int size = (uint)m.size;
+				uint base_offset = size * (size - 1);
+			
+				generator->Generate(size, 0.0f);
+				generator->setStartNode(m.startId);
+				generator->setEndNode(m.endId);
+
+				for (int i = 0; (uint)i <= base_offset * 2; ++i) {
+					if (m.allEdges[i] == (uint)1) {
+						generator->allEdges[i]._iswall = true;
+					}
+					else if(m.allEdges[i] == (uint)0) {
+						generator->allEdges[i]._iswall = false;
+					}
 				}
-				
-				cout << "maze info packet recieved. \n";
-				//create maze here
-				
+
+			render = new MazeRenderer(generator);
+			const Vector3 pos_maze3 = Vector3(0.f, 0.f, 3.f);
+			Matrix4 maze_scalar = Matrix4::Scale(Vector3(5.f, 5.0f / float(m.size), 5.f)) * Matrix4::Translation(Vector3(-0.5f, 0.f, -0.5f));
+			render->Render()->SetTransform(Matrix4::Translation(pos_maze3) * maze_scalar);
+			this->AddGameObject(render);
 			}
 			else
 			{

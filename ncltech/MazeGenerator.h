@@ -23,6 +23,14 @@ public:
 	//Used as a hack for the MazeRenderer to generate the walls more effeciently
 	GraphNode* GetAllNodesArr() { return allNodes; }
 
+	void setStartNode(int id) {
+		start = &allNodes[id];
+	}
+
+	void setEndNode(int id) {
+		end = &allNodes[id];
+	}
+
 protected:
 	void GetRandomStartEndNodes();
 
@@ -39,4 +47,8 @@ public:
 
 	GraphNode* allNodes;
 	GraphEdge* allEdges;
+	uint base_offset;
+
+	int idxS;
+	int idxE;
 };

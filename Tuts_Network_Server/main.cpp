@@ -63,9 +63,19 @@ Mesh* wallmesh;
 
 void Win32_PrintAllAdapterIPAddresses();
 
+enum packetType { mazePack, mazeSizePack, helloPack };
+
 struct mazePacket {
-	uint mazeSize;
-	uint mazeWalls [1024] ;
+	packetType t = mazePack;
+	uint size;
+	uint startId;
+	uint endId;
+	uint allEdges[1024];
+};
+
+struct gridSizePacket {
+	packetType t = mazeSizePack;
+	uint size;
 };
 
 int onExit(int exitcode)
@@ -117,13 +127,10 @@ int main(int arcg, char** argv)
 					//print is string
 					printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
 				}
-				if (evnt.packet->data[0] == 'i') {
+				if (evnt.packet->dataLength == sizeof(gridSizePacket) && evnt.packet->data[0] == mazeSizePack) {
 					//update if integer
-				    std::string stringValue = "";
-					for (int i = 2; i < (int)evnt.packet->dataLength; ++i) {
-						stringValue += (char)evnt.packet->data[i];
-					}
-					int mazeSize = stoi(stringValue);
+					int mazeSize;
+				    memcpy(&mazeSize, evnt.packet->data + sizeof(packetType), sizeof(uint));
 					printf("Int to use recived as: %i\n", mazeSize);
 
 					//generate the maze
@@ -131,19 +138,20 @@ int main(int arcg, char** argv)
 					MazeRenderer* mazeRenderer = new MazeRenderer(generator, wallmesh);
 					//send maze to client
 					mazePacket mazeInfo;
-					mazeInfo.mazeSize = mazeSize;
-					for (int i = 0; i < mazeSize * mazeSize; ++i) {
-						bool temp = mazeRenderer->getFlatMaze();
-						memcpy(&temp, mazeRenderer->getFlatMaze() + i * sizeof(bool), sizeof(bool));
-						if (temp) {
-							mazeInfo.mazeWalls[i] = 1;
+					mazeInfo.size = generator->GetSize();
+					mazeInfo.startId = generator->idxS;
+					mazeInfo.endId = generator->idxE;
+
+					for (int i = 0;(uint)i < generator->base_offset * 2;++i) {
+						GraphEdge* tempEdge = &generator->allEdges[i];
+						if (tempEdge->_iswall) {
+							mazeInfo.allEdges[i] = 1;
 						}
 						else {
-							mazeInfo.mazeWalls[i] = 0;
-						}
-						
+							mazeInfo.allEdges[i] = 0;
+						}	
 					}
-
+				
 					//create and send packet ot client
 					ENetPacket* mazeInfoPacket = enet_packet_create(&mazeInfo, sizeof(mazeInfo), 0);
 					enet_host_broadcast(server.m_pNetwork, 0, mazeInfoPacket);

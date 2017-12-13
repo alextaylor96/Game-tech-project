@@ -92,17 +92,23 @@ void MazeGenerator::GetRandomStartEndNodes()
 {
 	//Traditional Maze one side to the other
 	int edge = rand() % 2;
-	int idxS = rand() % size;
-	int idxE = rand() % size;
+	idxS = rand() % size;
+	idxE = rand() % size;
 	switch (edge)
 	{
 	case 0: //x
 		start = &allNodes[idxS * size];
 		end = &allNodes[(idxE + 1) * size - 1];
+
+		idxS = idxS * size;
+		idxE = (idxE + 1) * size - 1;
 		break;
 	case 1: //y
 		start = &allNodes[idxS];
 		end = &allNodes[size * (size - 1) + idxE];
+
+		idxS = idxS;
+		idxE = size * (size - 1) + idxE;
 		break;
 	}
 }
@@ -120,7 +126,7 @@ void MazeGenerator::Initiate_Arrays()
 		}
 	}
 
-	uint base_offset = size * (size - 1);
+	base_offset = size * (size - 1);
 	allEdges = new GraphEdge[base_offset * 2];
 
 	for (uint y = 0; y < size; ++y)
